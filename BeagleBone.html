@@ -1,0 +1,2648 @@
+<!DOCTYPE html>
+<html><head>
+
+<meta name="author" content="dcblaha">
+<meta charset="US-ASCII">
+
+<style type="text/css">
+<!--
+body
+	{
+	font-family:arial;
+	}
+-->
+</style><!-- Copyright dcblaha, Jan, 2013 --><title>Embedded Development with the BeagleBone</title></head><body>
+<h1><a class="mozTocH1" name="mozTocId512538"></a>Embedded Development with the BeagleBone</h1>April, 2014
+	<p>
+	This document describes hardware, operating systems, and application development.</p>
+<ol id="mozToc">
+<!--mozToc h1 1 h2 2 h3 3 h4 4 h5 5 h6 6--><li><a href="#mozTocId512538">Embedded Development with the BeagleBone</a></li><li><a href="#mozTocId682287">Hardware</a><ol><li><a href="#mozTocId95413">BeagleBone Usage</a><ol><li><a href="#mozTocId161168">Initial Setup</a></li><li><a href="#mozTocId953356">Connecting USB</a></li><li><a href="#mozTocId23826">Setting up a Console Terminal</a><ol><li><a href="#mozTocId357571">Windows</a></li><li><a href="#mozTocId477524">Linux</a></li></ol></li><li><a href="#mozTocId393762">Using a Terminal</a></li><li><a href="#mozTocId178185">Connecting Ethernet</a></li><li><a href="#mozTocId6188">Using RSE in Eclipse</a></li></ol></li><li><a href="#mozTocId375774">Capes</a><ol><li><a href="#mozTocId347272">Using LCD and USB Keyboard</a></li><li><a href="#mozTocId571230">RS&#8722;232 Cape</a></li><li><a href="#mozTocId374868">Audio Cape</a></li></ol></li><li><a href="#mozTocId901276">SD Cards</a><ol><li><a href="#mozTocId703429">Formatting an SD Card (Windows)</a></li><li><a href="#mozTocId391207">Formatting an SD Card (Linux)</a></li></ol></li></ol></li><li><a href="#mozTocId605449">Operating Systems</a><ol><li><a href="#mozTocId709518">Debian Operating System</a></li><li><a href="#mozTocId38349">TI/Arago Based Operating System</a><ol><li><a href="#mozTocId106107">Create top level directory</a></li><li><a href="#mozTocId855312">Get the TI toolchain</a></li><li><a href="#mozTocId923585">Get the code</a></li><li><a href="#mozTocId365311">Build</a></li><li><a href="#mozTocId742567">Copy the boot files</a><ol><li><a href="#mozTocId9878">Understanding U-Boot variables</a></li><li><a href="#mozTocId998862">Pre 3.8 linux Arago kernel</a></li><li><a href="#mozTocId697149">3.8 and later Angstrom linux kernel</a></li></ol></li><li><a href="#mozTocId599072">Copy the linux boot image</a></li><li><a href="#mozTocId805750">Put it all together</a></li></ol></li><li><a href="#mozTocId773626">Angstrom Based Operating Systems</a><ol><li><a href="#mozTocId571767">Angstrom Current Status</a></li><li><a href="#mozTocId617981">Standard Angstrom OS</a></li><li><a href="#mozTocId704461">Standard Angstrom Image (prebuilt OS) Modified</a><ol><li><a href="#mozTocId192823">Remove Password</a></li><li><a href="#mozTocId444647">Kiosk Mode</a></li><li><a href="#mozTocId598883">Rotate Screen (Portrait Mode)</a></li><li><a href="#mozTocId947672">Installing Packages</a></li><li><a href="#mozTocId670181">Debugging Graphics</a></li><li><a href="#mozTocId494146">System Logs</a></li></ol></li><li><a href="#mozTocId800100">Semi Custom Angstrom Image (Builder)</a></li><li><a href="#mozTocId971693">Locally Built Angstrom Image</a><ol><li><a href="#mozTocId82800">Open Embedded, BitBake and Angstrom</a></li><li><a href="#mozTocId139669">Medium Sized Linux (Systemd-gnome-image)</a></li><li><a href="#mozTocId245588">Add Needed Packages to SD Card</a></li></ol></li><li><a href="#mozTocId762535">Custom Image with Packages (myos-systemd-gnome-image)</a><ol><li><a href="#mozTocId249510">Bitbake Custom Image</a></li><li><a href="#mozTocId49090">Create a non-autotools application recipe</a></li><li><a href="#mozTocId231323">Create an autotools application recipe</a></li><li><a href="#mozTocId792280">Create an OS recipe</a></li><li><a href="#mozTocId218993">OS example recipe</a></li><li><a href="#mozTocId478644">Kernel definitions</a></li><li><a href="#mozTocId108199">Hob</a></li><li><a href="#mozTocId893351">Create a machine/board</a></li><li><a href="#mozTocId149839">Perform Autologin (Kiosk mode)</a></li><li><a href="#mozTocId55362">Bitbake Environment Variables (Mainly Directories)</a></li><li><a href="#mozTocId407776">Bitbake Recipe Types</a></li></ol></li><li><a href="#mozTocId799368">Customizing the Linux Kernel</a><ol><li><a href="#mozTocId619207">Custom Append Recipe</a></li><li><a href="#mozTocId802204">3.7 and earlier kernel</a></li><li><a href="#mozTocId772676">3.8 and later kernel</a></li><li><a href="#mozTocId109564">Example append recipe</a></li><li><a href="#mozTocId734524">Beaglebone Recipe Hierarchy</a></li><li><a href="#mozTocId235650">Bitbake Recipe Problems</a></li><li><a href="#mozTocId955237">Angstrom Directories</a></li><li><a href="#mozTocId118328">Bitbake/Angstrom Configure Kernel</a></li><li><a href="#mozTocId802501">Compile Kernel</a></li></ol></li><li><a href="#mozTocId753161">Bitbake/Angstrom Source Management</a><ol><li><a href="#mozTocId355986">Perform a build that saves tarballs</a></li><li><a href="#mozTocId292252">Save Source</a></li><li><a href="#mozTocId595929">Restore Source to another machine</a></li><li><a href="#mozTocId71918">Build without network</a></li></ol></li><li><a href="#mozTocId187791">Kernel Debugging (KGDB)</a></li><li><a href="#mozTocId174133">Boot Debugging</a></li><li><a href="#mozTocId451059">X11</a></li><li><a href="#mozTocId180398">Linux / TI source code</a></li></ol></li></ol></li><li><a href="#mozTocId372043">Creating Applications</a><ol><li><a href="#mozTocId146692">Set up an Application Build Environment</a><ol><li><a href="#mozTocId527016">Toolchain for Build</a></li><li><a href="#mozTocId120823">Cross Compiling Overview</a></li><li><a href="#mozTocId699983">Download Eclipse</a></li><li><a href="#mozTocId798363">Create an Eclipse Project</a></li><li><a href="#mozTocId563590">Moving workspace/project</a></li><li><a href="#mozTocId933198">Eclipse Problems</a></li><li><a href="#mozTocId625284">Copying Files and Remote System Explorer</a></li><li><a href="#mozTocId599301">Eclipse Remote Debugging</a></li><li><a href="#mozTocId384860">GTK on the Development PC</a></li><li><a href="#mozTocId260595">Debugging Startup Problems</a></li></ol></li><li><a href="#mozTocId293276">Application Software</a><ol><li><a href="#mozTocId217850">Code Differences on Windows and Linux</a><ol><li><a href="#mozTocId213515">MinGW and Serial Port</a></li></ol></li><li><a href="#mozTocId440554">GPIO</a></li><li><a href="#mozTocId57688">Power Consumption</a><ol><li><a href="#mozTocId86006">Kernel Suspend Test Support</a></li></ol></li><li><a href="#mozTocId584339">Wakeup</a><ol><li><a href="#mozTocId388900">Touchscreen wakeup</a></li><li><a href="#mozTocId787566">GPIO wakeup</a></li></ol></li><li><a href="#mozTocId757020">Internationalization/Localization</a></li><li><a href="#mozTocId275238">Gettext</a><ol><li><a href="#mozTocId219974">Gettext Overview</a></li><li><a href="#mozTocId724995">Gettext Notes</a></li><li><a href="#mozTocId189056">Ubuntu</a></li><li><a href="#mozTocId210301">Angstrom</a></li><li><a href="#mozTocId341228">GTK</a></li><li><a href="#mozTocId518557">Localization Test Example</a></li><li><a href="#mozTocId335942">Create the .po files</a></li><li><a href="#mozTocId731777">Create the .mo files</a></li></ol></li><li><a href="#mozTocId710325">On&#8722;Screen/Virtual Keyboards</a><ol><li><a href="#mozTocId327924">Matchbox Keyboard</a></li></ol></li></ol></li></ol></li><li><a href="#mozTocId329320">Other</a><ol><li><a href="#mozTocId986480">Remove DOS line endings</a></li><li><a href="#mozTocId49326">Git</a></li></ol></li>
+</ol>
+<p><br>
+
+</p>
+<h1><a class="mozTocH1" name="mozTocId682287"></a>Hardware</h1>
+	This section describes initial setup, and connections to the BeagleBone.
+  <h2><a class="mozTocH2" name="mozTocId95413"></a>BeagleBone Usage</h2>
+  <h3><a class="mozTocH3" name="mozTocId161168"></a>Initial Setup</h3>
+	There is already a preinstalled Angstrom/Linux Operating System on the micro SD card.
+	This OS will support standard BeagleBone functionality as well as adding board Capes.
+	Make sure the micro SD card is inserted into the BeagleBone main board.
+
+  <h3><a class="mozTocH3" name="mozTocId953356"></a>Connecting USB</h3>
+	Connect the USB mini on the BeagleBoard to a Windows PC or Linux PC.  The BeagleBone
+	will load the block device driver that will make the BeagleBone look like any memory
+	stick in the Windows Explorer. The Windows Explorer can also display the README.htm file
+	from the Beagle.
+	<p>
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="500"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.1 "
+   sodipodi:docname="BeagleBone.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2"
+     inkscape:cx="173.03906"
+     inkscape:cy="920.49397"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:window-width="1243"
+     inkscape:window-height="842"
+     inkscape:window-x="601"
+     inkscape:window-y="275"
+     inkscape:window-maximized="0">
+    <inkscape:grid
+       type="xygrid"
+       id="grid3013" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     style="display:inline">
+    <path
+       style="fill:#00ff00;fill-opacity:1;stroke:#000000;stroke-width:0.63737744;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 145,127.36218 0,65"
+       id="path3015"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="155"
+       y="167.36218"
+       id="text3017"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3019"
+         x="155"
+         y="167.36218">USB</tspan></text>
+    <rect
+       style="fill:#00ffff;fill-rule:evenodd;stroke:#000000;stroke-width:0.31540975px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="rect2985"
+       width="215"
+       height="35"
+       x="40"
+       y="92.362183" />
+    <rect
+       style="fill:#00ff00;fill-rule:evenodd;stroke:#000000;stroke-width:0.44924372px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="rect3003"
+       width="215"
+       height="40"
+       x="40"
+       y="192.36218" />
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Sans"
+       x="50"
+       y="117.36218"
+       id="text3017-7"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3019-3"
+         x="50"
+         y="117.36218">Windows or Linux PC</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Sans"
+       x="50"
+       y="217.36218"
+       id="text3017-7-2"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3019-3-0"
+         x="50"
+         y="217.36218">Beaglebone</tspan></text>
+  </g>
+</svg>
+
+
+</p><p>
+	It is possible to select and run the adafruit tutorial from the BeagleBone as described
+	in the README.htm. It shows how to load drivers and run a terminal to test serial and
+	test ethernet.
+	</p><p>
+	If a Windows PC is used, install the BONE_DRV.exe drivers to the PC if not already done.
+	The drivers are in the Drivers/Windows directory of the block device of the BeagleBone.
+	These drivers are required to setup a serial terminal on a PC remote from the BeagleBone.
+
+  </p><h3><a class="mozTocH3" name="mozTocId23826"></a>Setting up a Console Terminal</h3>
+  <h4><a class="mozTocH4" name="mozTocId357571"></a>Windows</h4>
+	One way to find the BeagleBone devices presented to the PC is to look at Devices and
+	Printers in Windows 7. Right click Properties on the BeagleBone device, then Hardware
+	tab to see the serial port. (Mine is COM19).
+	<p>
+	Download Putty, Teraterm, Realterm or some other serial terminal to the Windows PC or
+	use Hyperterm. I used Tera Term. In Tera Term, select Setup/Serial port and typically
+	select the last COM port listed and set the Baud rate to 115200. 
+	Typically the Parity=None and Databits=8 is already the default. After the beagle bone
+	has booted, press the Enter key, and the Angstrom logo should appear.
+
+  </p><h4><a class="mozTocH4" name="mozTocId477524"></a>Linux</h4>
+	Load the GtkTerm or minicom package. Enter "sudo gtkterm" to open a
+	terminal to the board. Set up the serial parameters the same as in Windows as described
+	above. Press the Enter key or reboot and the Angstrom logo should appear.
+
+  <h3><a class="mozTocH3" name="mozTocId393762"></a>Using a Terminal</h3>
+	Angstrom text should display during the boot or reset.  It is possible to login to
+	Anstrom with a username of root	and no password. The ls and other Linux commands
+	should work.  There is a reset button for the BeagleBone near the Ethernet connector.
+	It is also possible to cause a reset by typing "reboot" in a terminal.
+	<p>
+	Each time the BeagleBone is powered on, the serial port may have to be reset. Resetting the
+	beaglebone will not cause the serial port to reset, so this is a good method to see the
+	start of the boot.
+	</p><p>
+	Enter "ifconfig eth0" to see the IP address if the Ethernet cable is attached.
+
+  </p><h3><a class="mozTocH3" name="mozTocId178185"></a>Connecting Ethernet</h3>
+	Plug in an ethernet cable between the PC and the BeagleBone. I used an ethernet switch
+	between the BeagleBone, PC and Internet source.
+	<p>
+	Set up a USB terminal as described above in order to run some commands from the PC.
+	Enter "ifconfig eth0" to find the inet addr. The address should be filled some number of
+	seconds after the Ethernet is connected properly.
+	</p><p>
+	Set up either another terminal or Eclipse to be able to connect to the Ethernet IP
+	address. Another option is to use an internet browser. When the IP address is entered
+	into the address bar of the internet browser, a slideshow should display with the 
+	Angstrom/Cloud9 distribution that allows dynamic interaction with the Beagle.
+
+  </p><h3><a class="mozTocH3" name="mozTocId6188"></a>Using RSE in Eclipse</h3>
+	The Remote System Explorer in Eclipse is another way to view a terminal and view files
+	on the BeagleBone. This is described below.
+
+
+<h2><a class="mozTocH2" name="mozTocId375774"></a>Capes</h2>
+  <h3><a class="mozTocH3" name="mozTocId347272"></a>Using LCD and USB Keyboard</h3>
+	If an LCD cape is plugged into the BeagleBone, the Gnome desktop will display on the LCD if the
+	prebuilt Angstrom image is used.
+	<p>
+	If a USB keyboard is plugged into the BeagleBone, it can be useful to set up the OS.
+	This step is optional and requires an Angstrom image with Gnome that starts GDM. (The default
+	BeagleBone/Angstrom image.)
+	</p><p>
+	</p><ul>
+	<li>Connect a USB keyboard to the BeagleBone and boot</li>
+	<li>Wait about 30 seconds for the OS to fully boot</li>
+	<li>Click on Applications on the BeagleBone menu</li>
+	<li>Choose Accessories/Terminal</li>
+	<li>Use the keyboard and note how commands such as ls, cd, etc. can be used.</li>
+	</ul>
+
+  <h3><a class="mozTocH3" name="mozTocId571230"></a>RS&#8722;232 Cape</h3>
+	By default, the RS232 Cape will not display the Linux console output. The console is
+	best displayed by using the USB cable between the PC and BeagleBone. By default, the
+	RS232 cape uses uart2 (ttyO2), and the console uses uart0 (ttyO0).
+	<p>
+	I bought two different USB to RS&#8722;232 adapters (Gearhead and Plugable), and neither of
+	them would load the correct driver for Windows 7. They were both based on a Prolific
+	chip. Linux loaded both correctly. I used gtkterm to connect as a terminal. Select
+	Configuration/Port and typically choose the port "/dev/ttyUSB0" as long as there are
+	no other connections to the BeagleBone. If the console terminal is already ttyUSB0, then
+	most likely use ttyUSB1 for the USB to RS-232 adapter.
+	</p><p>
+	Pin one (ground) must be connected between both RS-232 connectors. Pins 2 and 3 must
+	not be swapped. By default, the beagleBone baud rate is 9600.
+	</p><p>
+	To find the serial port name on the beagleBone, use "dmesg | grep tty" at the console
+	terminal. ttyO2 is mapped to UART2. Doing "ls &gt; ttyO2" should dump the file listing
+	to the remote terminal/PC.
+	</p><p>
+	To verify the connection, I am using Tera Term on a Windows PC and connecting using the
+	USB serial as described above. Then on the Linux PC with a USB to RS232 converter, I am
+	using GTKTerm and connecting to the converter. Then run "echo test &gt; ttyO2", from the
+	Windows PC, and the output should display on the Linux PC.
+
+  </p><h3><a class="mozTocH3" name="mozTocId374868"></a>Audio Cape</h3>
+	I first used headphones, but then I connected a CVS&#8722;1708 speaker directly to the audio
+	output of the cape. This has poor sound quality, but was good enough to test without
+	using an amplifier or wearing headphones.  My main requirement was just to get
+	alerts/beeps working.
+	<p>
+	Use alsa&#8722;utils&#8722;aplay or paplay(pulse audio) and alsamixer to play sound. To get this,
+	do opkg update, then opkg install alsa&#8722;utils. Some commands are:
+	</p><ul>
+	<li>aplay ~/2k.wav</li>
+	<li>aplay &#8722;c 2 &#8722;f S16_LE &#8722;r 44100 /dev/urandom</li>
+	<li>"amixer set Master 10%", instead of Master, use "PCM",
+	"Line", or "Line DAC"</li>
+	</ul>
+	<p>
+	I had some difficulty getting gstreamer to work. I was going to use libcanberra since it
+	is already installed, but it cannot stream wav files. Instead I tried the asound library
+	from ALSA.  It works fine, but there is no code for loading files.  I found a cheap hack
+	of just directly streaming the entire contents of a .wav file to ALSA. This works because
+	the header is such a small part of the file.  This also requires knowing the audio parameters
+	(such as sampling frequency) of the file. A more correct solution would be to use
+	libsndfile, but for my needs (just playing a few .wav soundfiles where the parameters
+	for each file are known), this isn&#8217;t necessary yet.
+
+
+  </p><h2><a class="mozTocH2" name="mozTocId901276"></a>SD Cards</h2>
+	I first used the Windows method since it is easy and fairly fool proof to use with
+	an existing Linux image.  The Linux method provides much more control over the disk format.
+	<p>
+	I bought another microcard to use for testing. Some places say to format as FAT32.
+	The memory card I purchased was already that format.  In Windows, right clicking on the
+	drive will give format option also.
+	</p><p>
+	At first the card reader driver on my Windows PC wasn&#8217;t working and an upgrade
+	allowed it to function.
+
+    </p><h3><a class="mozTocH3" name="mozTocId703429"></a>Formatting an SD Card (Windows)</h3>
+	I needed to upgrade the Windows driver for the HP SD card reader in order to write a memory
+	card.  This worked to write to use Win32DiskImager to write a standard OS. 
+	The SD card reader built into the HP laptop had a few problems.
+	<ul>
+	<li>The driver needed to be updated.</li>
+	<li>Even after the driver was updated, after the Win32DiskImager program would create a
+	valid image for the beaglebone, but in the Windows OS, the card was unreadable and would
+	request it to be formatted the next time it was inserted. Later I found a USB reader hardware,
+	and it would read and write the card successfully even after written with Win32DiskImager.</li>
+	</ul>
+	After the Windows driver is installed:
+	<ul>
+	<li>In Windows, insert disk and allow formatting if requested.</li>
+	<li>Use Win32DiskImager to copy Angstrom image. This can be a custom or prebuilt image
+	downloaded from the web.</li>
+	</ul>
+
+    <h3><a class="mozTocH3" name="mozTocId391207"></a>Formatting an SD Card (Linux)</h3>
+	<b>WARNING</b> - selecting the wrong drive will erase data. Verify that /dev/sdb in
+	the following scripts points to the correct drive. When the SD card is plugged in, a new entry
+	should show up under /dev.
+	<p>
+	For the following scripts, it may be necessary to run the commands by hand in some cases. This
+	is because different partitions will not be seen until the device is replugged in.  Also, Windows
+	will not see the partitions and will attempt to format if the mkfs commands have not been run
+	yet.  If the SD card already has partitions, it may be necessary to run fdisk and use the "d"
+	command to delete the partitions.
+	</p><p>
+	Create a script file named microsd-erase.sh with the following contents. Remember
+	to change the permissions to be executable using either chmod or right clicking on the file and
+	changing file properties.
+	</p><pre>	#!/bin/sh<br>	export DISK=/dev/sdb<br>	sudo dd if=/dev/zero of=${DISK} bs=1024 count=1024<br>	sudo parted --script ${DISK} mklabel msdos<br>	echo Remove USB SDCARD and reattach<br>	</pre>
+	After running the erase script, the SD card may need to be ejected/removed and
+	reinserted to remount the drives.
+	To partition and format the card, create a script file named microsd-partition.sh with the
+	following contents.
+	<pre>	#!/bin/sh<br>	export DISK=/dev/sdb<br><br>	# create first partition (boot)<br>	echo "o" &gt; microsd-temp.txt<br>	echo "n" &gt;&gt; microsd-temp.txt<br>	echo "p" &gt;&gt; microsd-temp.txt<br>	echo "1" &gt;&gt; microsd-temp.txt<br>	echo "" &gt;&gt; microsd-temp.txt<br>	echo "+64M" &gt;&gt; microsd-temp.txt<br>	# change partition system id to FAT16<br>	echo "t" &gt;&gt; microsd-temp.txt<br>	echo "e" &gt;&gt; microsd-temp.txt<br>	# make first partition bootable<br>	echo "a" &gt;&gt; microsd-temp.txt<br>	echo "1" &gt;&gt; microsd-temp.txt<br>	# create second  partition (rootfs)<br>	echo "n" &gt;&gt; microsd-temp.txt<br>	echo "p2" &gt;&gt; microsd-temp.txt<br>	echo "2" &gt;&gt; microsd-temp.txt<br>	echo "" &gt;&gt; microsd-temp.txt<br>	echo "" &gt;&gt; microsd-temp.txt<br>	# display partitions<br>	echo "p" &gt;&gt; microsd-temp.txt<br>	# write changes<br>	echo "w" &gt;&gt; microsd-temp.txt<br><br>	sudo fdisk ${DISK} &lt; microsd-temp.txt<br>	sudo parted --script ${DISK} set 1 boot on<br><br>	echo formatting boot partition<br>	# format first partition as VFAT<br>	sudo mkfs.vfat -F 16 ${DISK}1 -n boot<br><br>	echo formatting rootfs partition<br>	# format second partition as ext4<br>	sudo mkfs.ext3 ${DISK}2 -L rootfs<br>	</pre>
+	After the card is formatted, it may be useful to change the ownership of the
+	partitions using the chown command.
+
+<h1><a class="mozTocH1" name="mozTocId605449"></a>Operating Systems</h1>
+	There are many choices of operating systems for the BeagleBone.  This document only
+	covers a small subset of the Linux versions that will support GTK/QT.
+	<p>
+	</p><ul>
+	
+  <li>Debian - It looks like Debian will be the new default OS for the device tree versions (3.8 and later) of Linux.<br>
+  </li>
+  <li>Angstrom - At this time, the Angstrom OS is the prebuilt OS for the
+	beaglebone. The Angstrom operating systems don't support suspend/resume yet.
+	This is a guess, but the Angstrom project may get suspend/resume some number of
+	months after the mainline Linux kernel. The Angstrom licensing
+	may also be more difficult since it includes many packages.  It also seems more
+	difficult to control all of the source code. Angstrom appears to be dependent on
+	Arago, but I do not know if it gets all features. Angstrom is nice because recipes
+	can be used to create images that can be used on an SD card without modification, and
+	because it provides recipes for various amounts of software to be installed.</li>
+
+	<li>Arago - The TI/Arago operating system is a minimal OS with the opkg package manager.
+	This means it does not support the beaglebone capes directly, but opkg can be used
+	to load packages. The TI/Arago OS "v3.2-staging" branch supports suspend and resume. The source
+	link is here:
+	http://arago-project.org/git/projects/?p=linux-am33x.git;a=shortlog;h=refs/heads/v3.2-staging</li>
+	<li>Mainline Linux kernel - The mainline linux kernel may get suspend/resume
+	in version 3.10 or 3.11 (which could be about four months from 4-2012), which has
+	to be rewritten because the linux kernel changed to device trees, which affected
+	source code organization. This also broke many working features for the beaglebone,
+	so you may not be able to use the mainline linux kernel yet.</li>
+	</ul><br>
+<h2><a class="mozTocH2" name="mozTocId709518"></a>Debian Operating System</h2>
+The Debian operating system does not currently support all old LCD3 capes. See
+here: https://github.com/beagleboard/cape-firmware/tree/master/dts<br>
+<br>
+On this page <a href="http://www.elinux.org/Beagleboard:BeagleBoneBlack">
+<span style="">www.elinux.org/Beagleboard:BeagleBoneBlack</span></a>
+<span class="MsoHyperlink"><span style=""><o:p></o:p></span></span>,
+ it said that they are moving to debian in a few weeks. <br>
+<br>
+Cape information is here: <a href="https://github.com/beagleboard/cape-firmware/tree/master/dts">
+https://github.com/beagleboard/cape-firmware/tree/master/dts</a>
+<br><br>
+There is a Beta image here <a href="http://beagleboard.org/latest-images">
+ http://beagleboard.org/latest-images</a>,
+ that can be loaded using the following:<br>
+<ul>
+<li>Download from<span style="text-decoration: underline;"> </span>
+<a href="http://beagleboard.org/project/debian">http://beagleboard.org/project/debian</a>
+</li><ul><li>I got version 3-27-2014<br></li></ul><li>Use 7-zip to extract .img<br>
+</li><li>Use Win32DiskImager to install to SD</li>
+</ul>
+Results:<br>
+<ul>
+<li>It boots and is accessible by USB terminal<br></li>
+<li>Failed to find dtbo for 'BB-BONE-LCD3-01'</li><li>Failed to load slot-0 BB-BONE-LCD3-01:00A1</li><li>USB displays block device directory</li>
+<ul><li>dtbs directory (No LCD dtbs present)<br></li></ul><li>/proc/version shows gcc version 4.6.3</li><li>uname -r shows 3.8.13-bone43</li>
+<li>Package manager is apt-get</li><ul><li>sudo apt-get install gtk-3.0</li><ul><li>After
+ this operation, 1,35 MB of additional disk space will be used. E: You 
+don't have enough free space in /var/cache/apt/archives/.</li>
+<li>Run "sudo apt-get clean", didn't work.</li><li>libgtk-3-common is already present</li><li>/etc/X11 is present</li></ul></ul>
+</ul>
+Remove extra packages:<br>
+&nbsp;&nbsp;&nbsp; http://hifiduino.wordpress.com/2014/03/17/beaglebone-black-base-operating-system/<span style="font-family: monospace;"><br></span>
+<ul>
+<li>"sudo apt-get remove libopencv-* --purge" then "sudo apt-get
+autoremove", removes&nbsp; 41 MB + 62 MB, but&nbsp; need some later for
+gtk<span style="font-family: monospace;"></span></li><li><span style="font-family: monospace;"></span>rm -rf /usr/lib/chromium/<span style="font-family: monospace;"></span></li><li><span style="font-family: monospace;"></span>rm -f /usr/bin/chromium<span style="font-family: monospace;"></span></li><li><span style="font-family: monospace;"></span>rm /usr/share/doc -r</li><li>Use dpkg-query to find packages</li><li>"dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -n"</li>
+</ul>
+<br>
+
+
+<h2><a class="mozTocH2" name="mozTocId38349"></a>TI/Arago Based Operating System</h2>
+	I used Ubuntu on the development workstation.  This is used to generate a Linux kernel
+	that has suspend and resume for the BeagleBone.  This should work with the 3.8 or
+	later kernel with some modifications to the uEnv.txt, and git commands.
+
+    <h3><a class="mozTocH3" name="mozTocId106107"></a>Create top level directory</h3>
+	Create a linux-am335x directory for the top level directory.  All other directories
+	using the following scripts will create all files/directories within this directory.
+
+    <h3><a class="mozTocH3" name="mozTocId855312"></a>Get the TI toolchain</h3>
+	Get the TI toolchain from http://www.ti.com/tool/linuxezsdk-sitara
+. Download the
+	"AM335x EVM SDK". This does not require registration. After downloading, run the
+	downloaded package, and install under the linux-am335x directory. This
+	will create the directory linux-am335x/ti-sdk-am225x-evm-05.07.0.00.
+
+    <h3><a class="mozTocH3" name="mozTocId923585"></a>Get the code</h3>
+	Create a script named get-u-boot.sh that contains the following.
+	This will create a directory linux-am335x/u-boot.
+	<pre>	#!/bin/sh<br>	git clone git://git.denx.de/u-boot.git<br>	</pre>
+
+	<p>
+	Create a script named get-pm-firmware.sh that contains the following.
+	This will create a directory linux-am335x/am33x-cm3.
+	</p><pre>	#!/bin/sh<br>	git clone git://git.arago-project.org/git/projects/am33x-cm3.git<br>
+	</pre>
+	<p>
+	Create a script named get-linux.sh that contains the following.
+	This will create a directory linux-am335x/linux-am33x.  This is only
+	for the "v3.2-staging" branch.
+	</p>
+	<pre>
+	#!/bin/sh<br>
+	git clone git://arago-project.org/git/projects/linux-am33x.git<br>
+	cd linux-am33x<br>	git checkout -f v3.2-staging<br>	</pre>
+
+    <h3><a class="mozTocH3" name="mozTocId365311"></a>Build</h3>
+	Create a script named build-u-boot.sh that contains the following.
+	This will create a directory linux-am335x/linux-am33x-output.
+	<pre>	export PATH="$PWD/ti-sdk-am335x-evm-05.07.00.00/linux-devkit/bin:$PATH"<br>
+	TOOLCHAIN="arm-arago-linux-gnueabi-"<br>
+	OUTPUT_DIR="$PWD/u-boot-output"<br>
+	# Configure and build<br>
+	cd u-boot<br>
+	make O=${OUTPUT_DIR} ARCH=arm CROSS_COMPILE=${TOOLCHAIN} distclean<br>
+	make O=${OUTPUT_DIR} ARCH=arm CROSS_COMPILE=${TOOLCHAIN} am335x_evm_config<br>
+	make O=${OUTPUT_DIR} ARCH=arm CROSS_COMPILE=${TOOLCHAIN}<br>	</pre>
+	
+	<p>
+	There is no need to build the PM firmware because, the git source contains
+	a bin directory with a prebuilt binary. But the PM firmware must be copied
+	to the linux firmware directory.
+	Create a script named build-copy-pm-firmware.sh that contains the following.
+	</p><pre>
+	#!/bin/sh<br>
+	cp $PWD/am33x-cm3/bin/am335x-pm-firmware.bin $PWD/linux-am33x/firmware<br>
+	</pre>
+
+	<p>
+	Create a script named build-linux.sh that contains the following.
+	This will create a directory linux-am335x/linux-am33x-output.
+	Uncommect the the menuconfig line in order to configure linux different
+	than the default.
+	</p><p>
+	If you are going to use a systemd OS, then change the 
+	linux-am335x/linuxam33x/arch/arm/configs am335x_evm_defconfig file
+	to set the folowing, or the boot will report "Failed to mount /dev: no such device".
+	</p><ul>
+	<li>CONFIG_DEVTMPFS=y</li>
+	<li>CONFIG_DEVTMPFS_MOUNT=y</li>
+	<li>CONFIG_CGROUPS=y</li>
+	<li>CONFIG_AUTOFS4_FS=y</li>
+	<li>CONFIG_IPV6=y</li>
+	</ul>
+	<pre>	#!/bin/sh<br>	# Get toolchain from http://www.ti.com/tool/linuxezsdk-sitara<br>
+	export PATH="$PWD/ti-sdk-am335x-evm-05.07.00.00/linux-devkit/bin:$PATH"<br>
+	OUTPUT_DIR="$PWD/linux-am33x-output"<br>
+	TOOLCHAIN="arm-arago-linux-gnueabi-"<br>
+	cd linux-am33x<br>
+	make O=${OUTPUT_DIR} ARCH=arm CROSS_COMPILE=${TOOLCHAIN} am335x_evm_defconfig<br>
+	cd ${OUTPUT_DIR}<br>		make ARCH=arm CROSS_COMPILE=${TOOLCHAIN} uImage<br>
+	# Output is in ./output/arch/arm/boot/uImage<br>
+	</pre>
+
+    <h3><a class="mozTocH3" name="mozTocId742567"></a>Copy the boot files</h3>
+	Create a script named microsd-copyboot.sh that contains the following. The output
+	is put into linux-am335x/linux-am33x-output. The following only works for certain
+	kernel images. The correct uEnv.txt section must be commented for the version needed.
+	<pre>	#!/bin/sh<br>	export SDCARDBOOT=/media/boot<br>	UBOOT_DIR=u-boot-output<br>
+	sudo cp -v ${UBOOT_DIR}/MLO ${SDCARDBOOT}<br>
+	sudo cp -v ${UBOOT_DIR}/u-boot.img ${SDCARDBOOT}<br>
+	</pre>
+
+	<h4><a class="mozTocH4" name="mozTocId9878"></a>Understanding U-Boot variables</h4>
+	One way to understand some of the contents of the variables is to
+	press a key while booting, then the following commands can be 
+	run.
+	<table border="1">
+	<tbody><tr><th>Command</th><th>Description</th></tr>
+	<tr><td>printenv</td><td>Displays all environment variables</td></tr>
+	<tr><td>run loadbootenv</td><td>Load the uEnv.txt file</td></tr>
+	<tr><td>run bootcmd</td><td>Load files and run boot sequence</td></tr>
+	</tbody></table>
+	<p>
+
+	One of the following can be added to the microsd-copyboot.sh file.
+	</p><h4><a class="mozTocH4" name="mozTocId998862"></a>Pre 3.8 linux Arago kernel</h4>
+	<pre>	cat &gt;uEnv.txt &lt;&lt;EOF<br>		# Build a uEnv.txt file for v2012.05-yocto1.2 version of Angstrom.<br>		bootargs=console=ttyO0,115200n8 root=/dev/mmcblk0p2 mem=128M rootwait<br>		bootcmd=mmc rescan; fatload mmc 0 0x82000000 uImage; bootm 0x82000000<br>		uenvcmd=boot<br>		initrd_high=0xffffffff<br>		fdt_high=0xffffffff<br>	EOF<br>	</pre>
+
+	<h4><a class="mozTocH4" name="mozTocId697149"></a>3.8 and later Angstrom linux kernel</h4>
+	The following should work for v2012.12-yocto1.3 version and later of Angstrom.
+	It looks like the uEnv.txt can be empty for Angstrom since the default settings
+	are all ok for loading the uImage and dtb files from the second partition.
+	Angstrom puts the uImage in the boot directory of the rootfs, which is normally
+	the second partition. This also means that there does not have to be a uImage
+	file in the first partition.
+	<p>
+	The following do not have to be specified since an empty uEnv.txt will end up
+	executing something similar to this.
+	</p><ul>
+		<li>ext2load mmc \${mmcdev}:2 \${kloadaddr} /boot/uImage-3.8.13</li>
+		<li>ext2load mmc \${mmcdev}:2 \${fdtaddr} /boot/am335x-bone.dtb</li>
+	</ul>
+	The following are already set.
+	<ul>
+		<li>fdtfile=/boot/am335x-bone.dtb</li>
+		<li>bootfile=uImage</li>
+		<li>bootpart=0:2</li>
+		<li>kloadaddr=0x8007fc0</li>
+		fdtaddr=0x80F80000.
+	</ul>
+	Use the following to add an LCD3 cape without an EEPROM.
+	<pre>	cat &gt;uEnv.txt &lt;&lt;EOF<br>		# Set up to enable the LCD3 cape without an EEPROM.<br>		optargs=capemgr.enable_partno=BB-BONE-LCD3=01:00A2<br>	EOF<br>	</pre>
+
+	Finally, this can be added to the microsd-copyboot.sh file.
+	<pre>	sudo cp -v ${UBOOT_DIR}/uEnv.txt ${SDCARDBOOT}<br><br>	</pre>
+
+	Note that the Linux kernels after 3.6 (after Angstrom v2012-05) also require the
+	am335x-bone.dtb file that is in work/beaglebone-angstrom-.../linux-mainline.../package/boot.
+	These need to be in the boot directory of the rootfs partition. Cape files may be needed also.
+	An example is cape-bone-lcd3-00A2.dtbo. These files are in
+	.../linux-mainline.../package/lib/firmware or
+	in build/tmp-ang.../deploy/ipk/beaglebone/kernel-devicetree-overlays...ipk. Note that LCD3-00A1
+	does not exist at this time?
+
+    <h3><a class="mozTocH3" name="mozTocId599072"></a>Copy the linux boot image</h3>
+	Create a script named microsd-copylinuxboot.sh that contains the following:
+	<pre>	#!/bin/sh<br>	export SDCARDBOOT=/media/boot<br>	sudo cp -v linux-am33x-output/arch/arm/boot/uImage ${SDCARDBOOT}<br>	</pre>
+
+    <h3><a class="mozTocH3" name="mozTocId805750"></a>Put it all together</h3>
+	Then run the scripts:
+	<ul>
+	<li>get-u-boot</li>
+	<li>get-pm-firmware</li>
+	<li>get-linux</li>
+	<li>build-u-boot</li>
+	<li>build-copy-pm-firmware</li>
+	<li>build-linux</li>
+	<li>microsd-erase</li>
+	<li>microsd-partition</li>
+	<li>microsd-copyboot</li>
+	<li>microsd-copylinuxboot</li>
+	</ul>
+
+	I am not sure how many of the following things pertain at this point.
+	<ul>
+	<li>Untar a Linux root filesystem to the rootfs partition on the SD card.</li>
+	<li>Untar the 3.8 Angstrom image to the SD card. This will make a rootfs OS, and will
+	make dtb files in the boot partition. It gives errors about changing ownership, but this
+	appears to be because the boot partition is fat.  It also gives a symlink error, so the
+	uImage-3.8.6 must be renamed to uImage.</li>
+	<li>A login error may display "Cannot make/remove an entry for the specified session". This
+	can be removed by deleting the "/etc/rcS.d/S39alsa-state" file in the rootfs partition
+	on the SD card.</li>
+	</ul>
+	<p>
+	This page shows how to get other various root file systems.
+	http://www.eewiki.net/display/linuxonarm/BeagleBone
+
+</p><br>
+<h2><a class="mozTocH2" name="mozTocId773626"></a>Angstrom Based Operating Systems</h2>
+<h3><a class="mozTocH3" name="mozTocId571767"></a>Angstrom Current Status</h3>
+	
+	Suspend and resume is the major feature that doesn't work for any OS.
+	
+<table border="1">
+
+	<tbody><tr><th>OS</th><th>Description</th></tr>
+	<tr><td>Prebuilt Angstrom Cloud9 v2012.05</td><td>Boots to gnome, LCD,
+		USB, ethernet work</td></tr>
+	<tr><td>Prebuilt Angstrom Cloud9 v2012.12</td><td>Boots to console, USB,
+		ethernet work, LCD3-A1 doesn't work.</td></tr>
+	<tr><td>Custom Angstrom systemd-gnome-image about 11/2012</td><td>Boots to gnome, LCD,
+		USB, ethernet work, kiosk mode, rotated screen, etc.</td></tr>
+	<tr><td>Custom Angstrom systemd-gnome-image after 3/2013</td><td>Hangs during boot</td></tr>
+	<tr><td>Custom Angstrom console-image after 3/2013</td><td>Boots to console and can set
+		LCD-3 cape with no EEPROM.</td></tr>
+	<tr><td>Custom Arago</td><td>2.6 kernel</td></tr>
+	</tbody>
+</table>
+<br>
+There are multiple options for using an OS with the target hardware. Angstrom is used as
+	the base OS for all of the following development.  This starts from a fairly stock image
+	and goes up to a fully customized kernel and image.
+	<ul>
+	<li>Standard Angstrom OS<br>
+	The target hardware supports many different prebuilt OS configurations/images that
+	are downloadable from the web: Android, Ubuntu, Angstrom, Gentoo, etc. These typically will
+	present a logon, etc. and can be useful for development.</li>
+	<li>Standard Angstrom Image (prebuilt OS) Modified<br>
+	A standard OS can be used on the SD card, and then modified by
+	the OS that is running the target hardware. Files can be modified, and packages can be
+	added or removed. After the OS is modified, the SD card can be copied to another SD card.
+	There may be ways to modify the kernel using modprobe, but generally the installation
+	is too difficult with this method since configuration would have to be done on each
+	board after it is booted.
+	<ul>
+	<li>The request for password can be removed by modifying configuration files.</li>
+	<li>The OS user interface can be removed by altering startup files.</li>
+	</ul>
+	</li>
+	<li>Semi&#8722;Custom Angstrom Image (Builder)<br>
+	There is an OS builder that can build some different
+	configurations of software. This method may still require custom drivers to be modified
+	after the target hardware is running, and then copying SD cards as in the
+	"Standard Modified" option above.</li>
+	<li>Locally Built Angstrom Image<br>
+	This would allow building and customizing the full OS
+	on the desktop. This does have much ability to customize which packages are installed
+	during the boot, so it still will require adding some packages after the SD card is created.</li>
+	<li>Custom Image with Packages<br>
+	This would allow building and customizing the full OS on the desktop. The packages
+	include packages for the application, and modified startup scripts to allow the
+	application to start at bootup.</li>
+	<li>Customizing the Linux Kernel<br>
+	This allows customizations to source code in the Linux kernel.
+	</li>
+	</ul>
+
+  <h3><a class="mozTocH3" name="mozTocId617981"></a>Standard Angstrom OS</h3>
+	The preloaded OS on the BeagleBone is a good starting point for development.
+	<p>
+	To find other standard OS images to download, search the web for the machine name alone with angstrom,
+	 such as "beaglebone angstrom".
+	</p><p>
+	The BeagleBone I received was Rev A6 labeled on the RJ45 connector. The prebuilt
+	software versions are defined at: http://circuitco.com/support/index.php?title=BeagleBone.
+	A6 is BeagleBone_Rev_a6_Production_06_18_2012.7z. I think the A6A version supports the
+	new LCD panel.
+	</p><p>
+	I used a prebuilt image Angstrom as an image for testing. Cloud9 is an OS built for
+	Ethernet development.  This default image includes Gnome, so is acceptable for developing
+	GTK applications.  If an LCD display is present, the Gnome desktop will display, and it
+	is possible to run applications.
+	</p><p>
+	Use 7&#8722;zip to extract the 	Anstrom&#8722;Cloud9&#8722;IDE_GNOME&#8722;eglibc&#8722;ipd&#8722;v2012.05&#8722;beaglebone&#8722;2012.06.18.img file.
+	Use Win32 Disk Imager (from win32diskimager.zip) to copy the image to the BeagleBone.
+	</p><p>
+	After loading the image, Windows will no longer be able to view the contents of the SD
+	with the card reader.
+
+  </p><h3><a class="mozTocH3" name="mozTocId704461"></a>Standard Angstrom Image (prebuilt OS) Modified</h3>
+	First read the "Standard Angstrom OS" section above. Then the image can be modified
+	as described below. Some of the modifications that can be made are:
+	<ul>
+	<li>Remove passwords</li>
+	<li>Create a kiosk mode</li>
+	<li>Rotate screen</li>
+	<li>Install packages</li>
+	<li>Customize startup scripts</li>
+	</ul>
+  <h4><a class="mozTocH4" name="mozTocId192823"></a>Remove Password</h4>
+	Remove the login by changing the /etc/gdm/custom.conf so that the [daemon]
+	section contains the following.
+	<pre>	AutomaticLoginEnable=true<br>	AutomaticLogin=root<br>	</pre>
+  <h4><a class="mozTocH4" name="mozTocId444647"></a>Kiosk Mode</h4>
+	For convenience of debugging, I added an "xhost +" to the following. It should be
+	removed if the Ethernet will be connected as part of a product since it will allow a user
+	to display an X window display on the LCD.
+	To auto start a program, do the following:
+	<ul>
+	<li>Create a script in ~/.xsession. Create this file with rights. View problems
+	in ~/.xsession&#8722;errors</li>
+	<pre>	#!/bin/sh<br>	gnome&#8722;wm &amp;<br>	xhost +<br>	cd /home/root/<i>startup&#8722;application</i>/<br>	./<i>MyApplication</i>
+	exit
+	</pre>
+	<li>Create a custom session in /usr/share/xsessions named gnome.desktop</li>
+	<pre>	[Desktop Entry]<br>	Name=Custom<br>	Comment=Custom session to run ~/.xsession<br>	Exec=/home/root/.xsession<br>	Type=Application<br>	</pre>
+	</ul>
+	The above results in the following:
+	<ul>
+	<li>Killing the startup application automatically restarts it.</li>
+	<li>Many gnome services removed (such as keyring, settings, panel, power&#8722;manager,
+	gphoto2&#8722;volume&#8722;monitor, etc.), but still keeps metacity.</li>
+	<li>It also has other services removed such as Bluetooth&#8722;applet, clock&#8722;applet,
+	notification&#8722;area&#8722;applet, etc.</li>
+	</ul>
+	To debug, use "/usr/bin/gnome&#8722;session" instead of ./<i>MyApplication</i>.
+  <h4><a class="mozTocH4" name="mozTocId598883"></a>Rotate Screen (Portrait Mode)</h4>
+	The screen rotation can be performed by modifying the xorg.conf file, and putting
+	"Option "Rotate" "CW"" under the "Device" section.
+	An example of the Device section is shown below.
+	<pre>	Section "Device"<br>	        Identifier      "Builtin Default fbdev Device 0"<br>        	Driver  "fbdev"<br>		Option	"Rotate" "CW"<br>	EndSection                                                <br>	</pre>
+	This was very confusing at first since there are many docs on the web that indicate
+	that the BeagleBone doesn&#8217;t have a vrfb or hardware rotation, and there are many old
+	configurations of xorg.conf files. The final solution is simple.
+	<p>
+	The other key point is that the touchscreen needs to be rotated. This is done using the
+	SwapAxis option in the xorg.conf file. A new Section named "InputClass" must be added
+	as the following.
+	</p><pre>	Section "InputClass"<br>		Identifier "axis inversion"<br>		MatchProduct "ti&#8722;tsc&#8722;adcc"<br>		# swap x/y axes on the device<br>		Option "SwapAxes" "on"<br>		# Invert axes<br>		Option "InvertY" "on"<br>	EndSection<br>	</pre>
+	The xinput&#8722;calibrator package recommends the pointercal&#8722;xinput package. The files
+	list of pointercal&#8722;xinput is "/etc/pointercal.xinput".
+	The xinput_calibrator_once.sh file reads and saves to "/etc/pointercal.xinput".
+  <h4><a class="mozTocH4" name="mozTocId947672"></a>Installing Packages</h4>
+	Packages are software libraries that can be used to display graphics, etc.
+	There is a package browser that can run from the PC for Angstrom at
+	http://www.angstrom&#8722;distribution.org/repo/.  It is also possible to use "opkg list libglib*"
+	or something like that on the beagle.
+	<p>
+	This normally requires an Ethernet connection. Before using the opkg package manager,
+	make sure the ethernet is installed, and then run "opkg update".
+	</p><p>
+	To install a few important packages, something like the following can be used:
+	"opkg install beaglebone&#8722;capes i2c&#8722;tools gdbserver
+	kernel&#8722;module&#8722;ftdi&#8722;sio xinput&#8722;calibrator kernel&#8722;module&#8722;usbserial".
+	</p><p>
+	Note that ipk files can be installed by copying the ipk files to the BeagleBone.
+	For example, "opkg install <i>mypackage</i>.ipk"
+  </p><h4><a class="mozTocH4" name="mozTocId670181"></a>Debugging Graphics</h4>
+	An error will display when debugging that it can&#8217;t open the display. This is an x11/xserver
+	error that prevents another machine from opening the display on the BeagleBone.
+	<pre>	"Gtk&#8722;WARNING **: cannot open display: :0.0"<br>	</pre>
+	In a terminal, I was able to run a remote GTK program by running "xhost +" on the BeagleBone
+	using the console terminal. Other options for running xhost are described elsewhere, such as
+	in kiosk mode.
+	<p>
+	This means that the export display argument can be added to Eclipse in the "Commands
+	to execute before application" in the Debug Configurations/Main, and then remote
+	debugging is possible.
+  </p><h4><a class="mozTocH4" name="mozTocId494146"></a>System Logs</h4>
+	The most commonly used debug log can be viewed using dmesg.
+	The following notes are for systemd. Change the file system.conf in the directory /etc/systemd.
+	Uncomment the option LogLevel and set it to:
+	<pre>	LogLevel=debug<br>	</pre>
+	In /run/log/journal, view with one of the following. Note that there is no filename specified.
+	<ul>
+	<li>journalctl</li>
+	<li>journalctl | grep <i>keyword</i></li>
+	<li>journalctl &gt; log.txt</li>
+	</ul>
+	The journal file is written to /run/log, which is volatile and will be lost after a reboot.
+	To make it persistant, create a directory called /var/log/journal. The journal file will be
+	stored there.
+
+
+
+  <h3><a class="mozTocH3" name="mozTocId800100"></a>Semi Custom Angstrom Image (Builder)</h3>
+	The preloaded OS is ok for some initial development.  The following describes a
+	semi&#8722;custom built OS. I don&#8217;t see much reason to do this since the fully custom OS
+	described below works fine and is much more flexible. There is a neat OS builder at
+	http://dominion.thruhere.net/koen/narcissus/ mentioned in http://www.angstrom-distribution.org/blog/koen,
+	with a blog dated 5/16/2012. This supports the BeagleBone. The other builder at
+	http://www.angstrom-distribution.org/builder/ does not support the Bone.
+	Another place to try might be http://feeds.angstrom-distribution.org/.
+
+  <h3><a class="mozTocH3" name="mozTocId971693"></a>Locally Built Angstrom Image</h3>
+	This section describes building an OS on a local PC. Adding packages and configuring
+	can be done after the BeagleBone has booted as described elsewhere.
+	<p>
+	Building a custom image requires a Linux machine. I tried a virtual machine under Windows and
+	was not successful. I have used Xubuntu or Ubuntu.
+
+  </p><h4><a class="mozTocH4" name="mozTocId82800"></a>Open Embedded, BitBake and Angstrom</h4>
+	After a fresh install of Xubuntu, the synaptic or apt-get can be used to install the following
+	additional packages:
+	<pre>	gawk diffstat subversion texi2html chrpath g++ makeinfo texinfo bitbake<br>	</pre>
+	Copy the Angstrom specific scripts to initialize an OpenEmbedded environment.
+	On one day (9-6-2012), I couldn&#8217;t get the "./oebb.sh config beaglebone" line to
+	work, but the next day I deleted the setup-scripts directory, and redid the git clone, and
+	it worked.
+	<p>
+	Get the setup scripts for Angstrom:
+	</p><pre>	git clone git://github.com/Angstrom-distribution/setup-scripts.git<br>	</pre>
+	To get a specific version/branch do the following. View the Angstrom git web site to find versions:
+	<pre>	cd setup-scripts<br>	git checkout angstrom-v2012.05-yocto1.2<br>	</pre>
+	Boards other than the BeagleBone may require a different download location.
+	<p>
+	The following notes describe the beaglebone and Ubuntu derivitives. Use bash instead of dash:
+	</p><pre>	sudo dpkg-reconfigure dash<br>	</pre>
+	Then select no to the prompt.
+	<p>
+	It is possible to reduce the number of layers to increase build speed. Only do this for
+	optimization since you must know which layers you can remove. Typically many of the machine
+	layers can be removed. This will reduce the number of image types that can be
+	built. For example, the java, browser, mono and kde layers may be needed for some
+	recipes. Edit the conf/bblayers.conf and sources/layers.txt before performing the first build,
+	and the extra layer subdirectories will not be retrieved.
+	</p><ul>
+	<li>bitbake (recipe tool)</li>
+	<li>meta-angstrom (console and systemd-gnome OS images)</li>
+	<li>meta-openembedded (gnome, xfce, networking packages)</li>
+	<li>meta-beagleboard (new linux 3.8 kernel)</li>
+	<li>meta-ti (TI kernel)</li>
+	<li>meta-linaro (cross compiler)</li>
+	<li>openembedded-core</li>
+	</ul>
+	<p>
+	Set up the configuration:
+	</p><ul>
+	<li>cd setup-scripts
+	</li><li>May need to do "rm &#8722;r ~.oe" before config  if the configuration has changed.<pre>	"MACHINE=beaglebone ./oebb.sh config beaglebone"</pre></li>
+	<li>May need to update:<pre>	"MACHINE=beaglebone ./oebb.sh update"</pre></li>
+	</ul>
+	Build some images. Only one image is needed and the systemd-gnome-image works well for our
+	application, but note that packages have to be added as described elsewhere in this document. Each
+	image can take many hours to build:
+	<ul>
+	<li>MACHINE=beaglebone ./oebb.sh bitbake console-image</li>
+	<li>MACHINE=beaglebone ./oebb.sh bitbake cloud9-image</li>
+	<li>MACHINE=beaglebone ./oebb.sh bitbake systemd-gnome-image</li>
+	</ul>
+	To find recipes, search under setup-scripts/sources for "image.bb". To find classes,
+	look in sources/openembedded-core/meta/classes/*.bbclass.
+	<p>
+	The built images are in tmp-angstrom_v2012_050eglibc/deploy/images/beaglebone. These sizes were
+	produced in 2012/2013.
+	</p><table border="1">
+	<tbody><tr><th>Recipe</th><th>Size</th><th>Image name</th><th>Supports</th></tr>
+	<tr><td>cloud9-image</td><td>161 MB</td>
+		<td>Angstrom-Cloud9-IDE-eglibc-ipk-v2012.05-beaglebone.rootfs.tar.bz2</td>
+		<td>Cloud9, GTK GDM, network</td></tr>
+	<tr><td>systemd-gnome-image</td><td>65 MB</td>
+		<td>Angstrom-systemd-GNOME-image-eglibc-ipk-v2012.05-beaglebone.rootfs.tar.bz2</td>
+		<td>GTK GDM, network</td></tr>
+	<tr><td>xfce-nm-image</td><td>42 MB</td>
+		<td>Angstrom-XFCE-NetworkManager-image-eglibc-ipk-v2012.05-beaglebone.rootfs.tar.bz2</td>
+		<td>XFWM4?, network</td></tr>
+	<tr><td>console-image</td><td>15 MB</td>
+		<td>Angstrom-console-image-eglibc-ipk-v2012.05-beaglebone.rootfs.tar.bz2</td>
+		<td>No display manager, no network*</td></tr>
+	</tbody></table>
+	*When booting with the TI/Arago kernel, and the CONFIG_IPV6 option is turned on, then
+	the console image has network support.
+
+
+	<h4><a class="mozTocH4" name="mozTocId139669"></a>Medium Sized Linux (Systemd-gnome-image)</h4>
+	Building this image works, but requires more installation work after booting the image.
+	The installation work mainly is to load additional packages. First I tried the systemd-gnome-image.
+	It is less than half the size of the originally installed image. It built ok, but there was no
+	screen output. I got lucky and tried to connect to the same Ethernet connection as the originally
+	preloaded OS, and the IP address was the same, and so Ethernet worked using the RSE in eclipse.
+	(A terminal emulator would also have worked)
+	
+	<h4><a class="mozTocH4" name="mozTocId245588"></a>Add Needed Packages to SD Card</h4>
+	These are notes about the systemd-gnome-image built on Sept 11, 2012.
+	The systemd OS does not have /var/log/messages. Dmesg shows that LCD3 cape was discovered. 
+	OS Versions:
+	<ul>
+	<li>Systemd-gnome-image linux version is 3.2.23</li>
+	<li>systemd log shows 3.3.38</li>
+	<li>uname &#8722;r shows 3.2.28</li>
+	</ul>
+	Both systemd-gnome-image and clound9 standard image showed in the /var/log/Xorg.0.log,
+	"(EE) Failed to load module ": extmod, dbe, glx, record, dri and dri2.
+	Also systemd-gnome-image was missing the following functionality:
+	<table border="1">
+	<tbody><tr><th>Problem</th><th>Package Needed</th></tr>
+	<tr><td>No display on LCD</td><td>beaglebone-capes, I2c-tools</td></tr>
+	<tr><td>No communication to USB device</td><td>kernel-module-ftdi-sio</td></tr>
+	<tr><td>No touch screen calibration</td><td>xinput-calibrator</td></tr>
+	<tr><td>No debugging</td><td>gdbserver</td></tr>
+	<tr><td>No USB recognized when plugged into PC</td><td>kernel-module-usbserial,
+	gadget-init, kernel-module-gadgetfs, beaglebone-getting-started</td></tr>
+	</tbody></table>
+	Some packages (such as beaglebone-capes) are not available by opkg. After doing
+	opkg update, the beaglebone-capes package was available. List of package lists
+	is in /var/lib/opkg/lists/.
+	<p>
+	The xinput-calibrator package will cause calibration to run automatically after
+	the first boot. A non-working calibration file is at /etc/udev/rules.d/touchscreen.rules.
+	Is pointercal used instead? This stores a file at /etc/pointercal.xinput.
+	</p><p>
+	The /var/log/Xorg.0.log showed that FBDEV(0) "current" mode was 30 MHz, 67.3kHz
+	instead of 8 MHz,17.9kHz (systemd). This did not appear to be a problem.
+	</p><p>
+	Clearing build caches solved this problem:
+	</p><pre>	ERROR:Error evaluating &#8216;${TARGET_OS}:${TRANSLATED_TARGET_ARCH}<br>	</pre>
+
+	<h3><a class="mozTocH3" name="mozTocId762535"></a>Custom Image with Packages (myos-systemd-gnome-image)</h3>
+	This section describes how to create an image that contains the final application,
+	and extra packages required to run. This builds on the previous sections, so read
+	them first.
+	<h4><a class="mozTocH4" name="mozTocId249510"></a>Bitbake Custom Image</h4>
+	One thing that confused me for some time is that Thunar (the explorer used in
+	Xubuntu) does not display a newly created directory correctly. Restarting Thunar works.
+	<p>
+	Change the local.conf file so that compiling is faster.
+	</p><pre>	BB_NUMBER_THREADS = "4"<br><br>	</pre>
+	Create a local layer
+	<ul>
+	<li>Create a "mylayer" directory under "setup-scripts/sources"</li>
+	<li>Create a recipes directory at /sources/mylayer/recipes-apps</li>
+	<ul>
+	<li>Create a "myapp" directory the application.</li>
+	<li>Create a "myos-systemd-gnome-image" directory for the OS.</li>
+	</ul>
+	<li>Create a conf directory under sources/mylayer and copy layer.conf from another layer, and:
+	<ul>
+	<li>Change BBFILES to "BBFILES += "${LAYERDIR}/recipes/*.bb</li>
+	<li>change BBFILE references to refer to local named layer.</li>
+	</ul>
+	<p>
+	The final directory structure should look like the following:
+	</p><pre>	mylayer<br>	  conf<br>	  recipes-apps<br>	    myapp<br>	  recipes-image<br>	    myos-systemd-gnome-image<br>	</pre>
+	</li><li>Edit the setup-scripts/conf/bblayers.conf and add the new layer to EXTRALAYERS.
+	<pre>	EXTRALAYERS ?= "${TOPDIR}/sources/mylayer"<br>	</pre>
+	</li></ul>
+	Configuring kernel and viewing layers:
+	<ul>
+	<li>./oebb.sh bitbake -c menuconfig virtual/kernel
+	</li><li>bitbake &#8722;g virtual/kernel		(shows dependency graph, does this work?)
+	</li></ul>
+	The following may be old. These didn't seem to work for me.:
+	<ul>
+	<li>bitbake-layers show-layers</li>
+	<li>bitbake-layers show-recipes</li>
+	<li>bitbake-layers show-appends</li>
+	<li>bitbake-layers show-overlayed</li>
+	</ul>
+
+	<h4><a class="mozTocH4" name="mozTocId49090"></a>Create a non-autotools application recipe</h4>
+	There are too many rules to list for recipes, so some basic ideas are listed here.
+	Directory structure of recipes and files is very important in order to use the
+	standard variables in bitbake.
+	<ul>
+	<li>Copy the beagle bone capes recipe as an example and name myapp.bb.</li>
+	<li>Add a license and checksum</li>
+	<li>Add a do_install function that installs files into different directories.</li>
+	</ul>
+	An example GTK recipe without Autotools is shown below. This recipe creates a gtest
+	application that is installed in the /home/root directory of the BeagleBone.
+
+	<pre>	DESCRIPTION = "GTK test program"<br>	LICENSE = "CLOSED"<br>	LIC_FILES_CHKSUM = "file://${COREBASE}/LICENSE;md5=3f40d7994397109285ec7b81fdeb3b58"<br>	PR = "r0"<br>	<br>	DEPENDS = "glib-2.0 gtk+ gettext"<br><br>	TARGET_DSTAPP_DIR = ""<br>	HOST_DSTAPP_DIR = "${D}${/home/root/${PN}}"<br>	SRC_URI = "file://gtest-files.tar.gz"<br><br>	# The md5sum is not needed for local files.<br>	# SRC_URI[md5sum] = "5e87a8d33dd5485a0261dc98aefae60e"<br><br>	# For beaglebone, STAGING_INCDIR is under sysroots/beaglebone/usr/include<br>	# WORKDIR is typically above ${PN}-${PV}<br>	do_compile() {<br>		${CC} ${CFLAGS} ${LDFLAGS} ${WORKDIR}/src/gtest.c -o gtest	\<br>		-I ${STAGING_INCDIR}/gtk-2.0	-I ${STAGING_LIBDIR}/gtk-2.0/include	\<br>		-I ${STAGING_INCDIR}/gdk-pixbuf-2.0	\<br>		-I ${STAGING_INCDIR}/cairo	-I ${STAGING_INCDIR}/pango-1.0		\<br>		-I ${STAGING_INCDIR}/glib-2.0	-I ${STAGING_LIBDIR}/glib-2.0/include	\<br>		-I ${STAGING_INCDIR}/atk-1.0	\<br>		-lgtk-x11-2.0	-lgobject-2.0	-lglib-2.0	\<br>	}<br>	do_install() {<br>		install -d ${HOST_DSTAPP_DIR}<br>		install -m 0755 ${S}/gtest ${HOST_DSTAPP_DIR}<br>	}<br><br>	# Make sure files are shipped into destination directory.<br>	FILES_${PN} += "${TARGET_DSTAPP_DIR}/* \<br>		"<br><br>	</pre>
+	Note that the contents of the gtest-files.tar.gz are very important. The zipped structure is:
+	<pre>	gtest-1.0<br>	  src<br>	    gtest.c<br>	    Makefile.am<br>	</pre>
+	The Makefile.am contents are:
+	<pre>	bin_PROGRAMS = gtest<br>	gtest_SOURCES = gtest.c<br>	gtest_CFLAGS = -Wall $(GTK_CFLAGS)<br>	gtest_LDADD = $(GTK_LIBS) $(INTLLIBS)<br>	</pre>
+
+	<ul>
+	To build or clean the app package.
+	<li>While developing a recipe, run the cleansstate (described elsewhere) to clear files</li>
+	<li>MACHINE=beaglebone  ./oebb.sh bitbake myapp</li>
+	<li>MACHINE=beaglebone  ./oebb.sh bitbake &#8722;c cleansstate myapp</li>
+	</ul>
+	One confusing thing in recipes is that _append is equal to +=.
+
+	<h4><a class="mozTocH4" name="mozTocId231323"></a>Create an autotools application recipe</h4>
+	An autotools recipe is simpler, but the makefiles may be more complex.
+	<pre>	DESCRIPTION = "GTK Autotools Application"<br>	LICENSE = "CLOSED"<br>	LIC_FILES_CHKSUM = "file://${COREBASE}/LICENSE;md5=3f40d7994397109285ec7b81fdeb3b58"<br>	PR = "r0"<br><br>	DEPENDS = "gtk+ intltool-native"<br><br>	TARGET_ROOT_DSTAPP_DIR = "/home/root"<br>	TARGET_DSTAPP_DIR = "/home/root/${PN}"<br><br>	HOST_ROOT_DSTAPP_DIR = "${D}${TARGET_ROOT_DSTAPP_DIR}"<br>	HOST_DSTAPP_DIR = "${D}${TARGET_DSTAPP_DIR}"<br><br>	SRC_URI = "file://gtkapp-1.0.tar.gz"<br><br>	# The md5sum is not needed for local files.<br>	# SRC_URI[md5sum] = "5e87a8d33dd5485a0261dc98aefae60e"<br><br>	inherit autotools<br><br>	do_install() {<br>		install -d ${HOST_DSTAPP_DIR}<br>		install -m 0755 ${S}/src/TestGtk ${HOST_DSTAPP_DIR}<br>		install -d ${HOST_DSTAPP_DIR}/data<br>		install -m 0755 ${S}/data/* ${HOST_DSTAPP_DIR}/data<br>	}<br><br>	# Make sure files are shipped into destination directory.<br>	FILES_${PN} += "${TARGET_DSTAPP_DIR}/* \<br>		"<br>	</pre>
+
+	The zipped structure of the gtkapp file is the following.
+	<pre>	gtest-1.0<br>	  configure.ac<br>	  Makefile.am<br>	  src<br>	    gtest.c<br>	    Makefile.am<br>	</pre>
+	The Makefile.am in the top directory looks something like:
+	<pre>	SUBDIRS = src<br>	</pre>
+	The Makefile.am in the src directory looks something like the following. It also shows an include
+	path and a linkage to the ALSA sound library.
+	<pre>	bin_PROGRAMS = GtkTest<br>	GtkTest_SOURCES = main.cpp<br>	AM_CPPFLAGS = -Wall -I../MyIncludes $(GTK_CFLAGS)<br>	GtkTest_LDFLAGS = -Xlinker -export-dynamic<br>	GtkTest_LDADD = $(GTK_LIBS) $(INTLLIBS) -lasound<br>	</pre>
+	The configure.ac file looks like the following.
+	<pre>	AC_PREREQ(2.59)<br>	AC_INIT(gtktest, 0.1)<br>	AM_INIT_AUTOMAKE($PACKAGE_TARNAME, $PACKAGE_VERSION)<br><br>	AC_CONFIG_SRCDIR([src/GtkTest/main.cpp])<br><br>	AM_CONFIG_HEADER([config.h])<br>	AM_INIT_AUTOMAKE<br><br>	AC_HEADER_STDBOOL<br>	AC_PROG_CXX<br>	PKG_CHECK_MODULES(GTK, gtk+-2.0)<br><br>	PKG_CHECK_MODULES(GMODULE, gmodule-2.0)<br><br>	GETTEXT_PACKAGE="$PACKAGE"<br>	AC_SUBST(GETTEXT_PACKAGE)<br>	AM_GLIB_GNU_GETTEXT<br>	AM_GLIB_DEFINE_LOCALEDIR(LOCALEDIR)<br><br>	AC_OUTPUT([Makefile src/Makefile src/GtkTest/Makefile])<br>	</pre>
+
+	<h4><a class="mozTocH4" name="mozTocId792280"></a>Create an OS recipe</h4>
+	<ul>
+	<li>Create myos-systemd-gnome-image.bb</li>
+	<li>Add a line "require recipes-images/angstrom/systemd-gnome-image.bb"</li>
+	<li>Edit the file and add "APP_PKGS ?= ..." that contains packages added above.</li>
+	<li>Add ${APP_PKGS} \ to the "IMAGE_INSTALL +=" list.</li>
+	<li>Change IMAGE_BASENAME to "myos-systemd-gnome-image"</li>
+	<li>Build using<pre>	"MACHINE=beaglebone  ./oebb.sh bitbake myos-systemd-gnome-image"</pre></li>
+	</ul>
+	<h4><a class="mozTocH4" name="mozTocId218993"></a>OS example recipe</h4>
+	<pre>	# systemd-gnome-image plus application packages<br><br>	require recipes-images/angstrom/systemd-gnome-image.bb<br><br>	DEPENDS += "virtual/kernel"<br><br>	EXTERNAL_PKGS ?= "beaglebone-capes i2c-tools kernel-module-ftdi-sio xinput-calibrator \<br>		gadget-init kernel-module-gadgetfs gdbserver matchbox-keyboard strace"<br>	APP_PKGS ?= "myapp"<br><br>	IMAGE_INSTALL += " \<br>		${EXTERNAL_PKGS} \<br>		${APP_PKGS} \<br>		angstrom-gdm-autologin-hack	\<br>	"<br><br>	export IMAGE_BASENAME = "myos-systemd-GNOME-image"<br>	</pre>
+
+	<h4><a class="mozTocH4" name="mozTocId478644"></a>Kernel definitions</h4>
+	Beaglebone kernel definitions
+	<ul>
+	<li>beaglebone.conf defines the PREFERRED_PROVIDER in sources/meta-ti/conf/machine</li>
+	<li>It defines virtual/kernel as linx-ti33x-psp. Also defined in ti33x.inc.</li>
+	<li>It defines virtual/xserver as "xserver-xorg"</li>
+	<li>It defines UBOOT_MACHINE as "am335x_evm_config"</li>
+	<li>There is a defconfig under recipes-kernel/linux/.../beaglebone  that defines kernel settings</li>
+	<li>linux-ti33x-psp_3.2.bb defines BRANCH = v3.2-staging of the Yocto project.</li>
+	</ul>
+
+	<h4><a class="mozTocH4" name="mozTocId108199"></a>Hob</h4>
+	Hob is a customized bitbake builder. I did not use this. The following crashed while
+	loading recipes:
+	<ul>
+	<li>Start a terminal and cd to setup-scripts</li>
+	<li>Run ". ~/.oe/environment-angstrom2012.05"</li>
+	<li>Run "hob"</li>
+	</ul>
+
+	<h4><a class="mozTocH4" name="mozTocId893351"></a>Create a machine/board</h4>
+	Creating a machine/board that is completely independent of the BeagleBone was too difficult
+	to get working for my purposes.  It was easier to just create a layer and modify the parts
+	I needed.
+
+	<h4><a class="mozTocH4" name="mozTocId149839"></a>Perform Autologin (Kiosk mode)</h4>
+	Add to the image recipe, "angstrom-gdm-autologin-hack".
+
+	<h4><a class="mozTocH4" name="mozTocId55362"></a>Bitbake Environment Variables (Mainly Directories)</h4>
+	Defined in bitbake.conf:
+	<ul>
+	<li>PF = ${PN}-${PV}-${PR}</li>
+	<li>WORKDIR = ${TMPDIR}/work/${PF} </li>
+	<li>P =  ${PN}-${PV}</li>
+	<li>S = ${WORKDIR}/${P}</li>
+	</ul>
+
+	Bitbake Tasks
+	<ul>
+	<li>The actual tasks that are run after building a recipe are listed in the
+	 ${WORKDIR}/temp directory. The following lists the typical function of each task.</li>
+	<li>Where are recipes defined? &#8722; BBFILES is defined in oebb.sh, and conf/layer.conf
+	 for each layer can override.</li>
+	</ul>
+	<table border="1">
+	<tbody><tr><th>Task</th><th>Description</th></tr>
+	<tr><td>fetch</td><td>Fetch source defined by SRC_URI and put into DL_DIR
+	(source/downloads). SRC_URI cannot have a path and files must be in the recipe
+	directory? An md5sum must be present for non-local files?</td></tr>
+	<tr><td>unpack</td><td>unpack files from DL_DIR (source/downloads) into WORKDIR</td></tr>
+	<tr><td>patch</td><td>performs patches on the files from the fetch</td></tr>
+	<tr><td>configure</td><td>Runs configuration scripts?</td></tr>
+	<tr><td>compile</td><td>compiles the source in the WORKDIR</td></tr>
+	<tr><td>install</td><td>Install normally creates directories under ${D} and moves
+	files from the ${S} directory to the ${D} directory. Install syntax is
+	"install" workdir/file targetdir</td></tr>
+	<tr><td>deploy</td><td><br>
+</td></tr>
+	<tr><td>populate_lic</td><td>copies the license</td></tr>
+	<tr><td>populate_lic_setscene</td><td>does something with licenses</td></tr>
+	<tr><td>populate_sysroot</td><td><br>
+</td></tr>
+	<tr><td>package</td><td>Moves files to the ${WORKDIR}/package directory?</td></tr>
+	<tr><td>package_write_ipk</td><td>Moves files to the deploy-ipks directory.</td></tr>
+	<tr><td>package_write</td><td><br>
+</td></tr>
+	<tr><td>build</td><td><br>
+</td></tr>
+	<tr><td>rm_work</td><td>Removes temporary files</td></tr>
+	<tr><td>rm_work_all</td><td><br>
+</td></tr>
+	<tr><td>rootfs</td><td>Runs opkg to install packages into the final image.</td></tr>
+	</tbody></table>
+	And there are some tasks that are not run as part of building.
+	<table border="1">
+	<tbody><tr><td>cleansstate</td><td>Performs a do_clean and do_cleansstate to clean source code
+	and cache</td></tr>
+	<tr><td>menuconfig</td><td>Allows manually configuring linux</td></tr>
+	</tbody></table>
+
+	<h4><a class="mozTocH4" name="mozTocId407776"></a>Bitbake Recipe Types</h4>
+	These are all recipes to be used by inherit: Autotools, cmake, native, deploy,
+	system, pkgconfig, allarch, gettext, gconf, gnome, kernel, and qmake.
+
+
+
+	<h3><a class="mozTocH3" name="mozTocId799368"></a>Customizing the Linux Kernel</h3>
+	<h4><a class="mozTocH4" name="mozTocId619207"></a>Custom Append Recipe</h4>
+	I used the following to add a beaglebone LCD3 cape without an EEPROM.
+	<h4><a class="mozTocH4" name="mozTocId802204"></a>3.7 and earlier kernel</h4>
+	For the beaglebone, it is possible to append to the linux-ti33x-psp_3.2.bb recipe.
+	Create a linux-ti33x-psp_3.2.bbappend recipe. The bbappend recipe just needs the following
+	lines. When I appended to the SRC_URI, then the patch got applied before other patches and
+	broke them. The patch order can be seen in the patch log under the temp directory.
+	The TI recipe uses PATCHES_OVER_PSP and this can be appended to instead of SRC_URI.
+	<pre>	PRINC="1"<br>	FILESEXTRAPATHS := "${THISDIR}"<br>	PATCHES_OVER_PSP += "file://am335x-capes.patch"<br>	</pre>
+	To create a patch file, just do "diff &#8722;Naur oldfile newfile &gt; file.patch".
+	Note that bitbake requires that the directory path inside of the patch file must be
+	correct.  If it says, "Can&#8217;t find file to path at input line x", then modify
+	the source inside the patch so that the second file is "b/drivers/video/cfbimgblt-fb.c" or
+	whichever file you are modifying.
+	I write a script file to alter the patch that contains:
+	<pre>	sed &#8722;I &#8217;s/c\-new/c/ ; s/+++ /+++ &#8217;"$SOURCEPATH"&#8217;/&#8217; $PATCHFILENAME<br>	</pre>
+	To learn about patches, it may be easiest to create a test directory to apply
+	patches with
+	<pre>	"patch filetopatch &lt;patchfile".<br>	</pre>
+	This does not teach about bitbake patch order though. If it says, 
+	<pre>	"Hunk #x FAILED at y"<br>	</pre>
+	then the patch is being applied to the wrong file. Make sure to run
+	<pre>	bitbake &#8722;c clean &#8722;f virtual/kernel<br>	bitbake &#8722;c configure &#8722;f virtual/kernel<br>	</pre>
+	in order to apply patches before performing a diff to create the patch.
+	Be sure to temporarily rename the bbappend file so that it is not found to prevent the new patch.
+
+
+	<h4><a class="mozTocH4" name="mozTocId772676"></a>3.8 and later kernel</h4>
+	The 3.8 kernel uses device trees. The new recipe to append is linux-mainline_3.8.bb, but
+	there is no need for any modifications because the uEnv.txt file can be modified to
+	load a driver for the cape.
+
+	Simply create a uEnv.txt with the following line.
+	<pre>	optargs=capemgr.enable_partno=BB-BONE-LCD3=01:00A2<br>	</pre>
+	During the boot, the logged output will show:
+	<pre>	bone-capemgr bone_capemgr.7: enabled_partno part_number 'BB-BONE-LCD3-01', version '00A2'<br>	</pre>
+
+	If a custom cape is created, the beaglebone capes are defined in 
+	work/beaglebone.../linux-mainline.../git/arch/arm/boot/dts/am335x-bone-common.dtsi.
+	The linux.inc file contains the build information for the dts files. It performs a "make dtbs"
+	and installs to arch/arm/boot/dts and to firmware/capes
+	<a href="http://devicetree.org/Device_Tree_Usage">Device Trees</a>
+
+	To modify the recipe, it may look like this.
+	<pre>	PRINC="1"<br>	FILESEXTRAPATHS := "${THISDIR}"<br>	SRC_URI += "file://am335x-capes-dtsi.patch"<br>	</pre>
+
+	To compile the dts files, use the following. This compile will put the dtb file into
+	the deploy/image rootfs image file in the boot directory. Intermediate steps can be omitted.
+	<pre>	MACHINE=beaglebone ./oebb.sh bitbake -f -c compile virtual/kernel<br>	MACHINE=beaglebone ./oebb.sh bitbake -f -c devicetree_image virtual/kernel<br>	MACHINE=beaglebone ./oebb.sh bitbake -f -c package virtual/kernel<br>	</pre>
+
+
+	<h4><a class="mozTocH4" name="mozTocId109564"></a>Example append recipe</h4>
+	<pre>	# Make a beaglebone recipe for kernel customizations.<br>	# This file must have the same root name as the recipe that it is appending. The extension<br>	# must be .bbappend in order to be found by bitbake.<br>	# Increment PR for this layer<br>	PRINC="1"<br>	FILESEXTRAPATHS := "${THISDIR}"<br>	SRC_URI += "file://am335x-custom.tar.gz"<br>	PATCHES_OVER_PSP += "file://am335x-capes.patch"<br>	</pre>
+	The zipped contents are as follows. Note that this is a new file added to the kernel. It is
+	possible for a patch to just modify an existing kernel file.
+	<pre>	am335x-custom.tar<br>	  git<br>	    arch<br>	      arm<br>	        mach-omap2<br>	          am33x-custom.c<br>	</pre>
+
+	<h4><a class="mozTocH4" name="mozTocId734524"></a>Beaglebone Recipe Hierarchy</h4>
+	The recipe chain was found by reading the recipes for v2012-05. The recipe chain to the beaglebone kernel is:
+	<ul>
+	<li>mylayer/recipes/myos-systemd-gnome-image</li>
+	<li>Meta-angstrom/recipes-images/angstrom/systemd-gnome-image</li>
+	<li>Meta-angstrom/recipes-images/angstrom/systemd-image</li>
+	<li>Meta-angstrom/recipes-angstrom/tasks/angstrom-task-boot</li>
+	<li>Meta-openembedded/meta-oe/recipes-core/tasks/task-boot</li>
+	<li>Virtual/kernel (The PREFERRED_PROVIDER defines which kernel to build as described above):</li>
+	<li>Meta-ti/recipes-kernel/linux/linux-ti33x-psp-3.2.bb</li>
+	<li>Arago-project.org/git/projects/linux-am33x.git (not a layer, but base am335x code is retrieved)</li>
+	<li>Yocto is here http://git.yoctoproject.org/cgit/cgit.cgi/poky/?h=denzil</li>
+	<li><a href="http://www.openembedded.org/wiki/LayerIndex">Open Embedded Layer Index</a></li>
+	</ul>
+	
+
+	<h4><a class="mozTocH4" name="mozTocId235650"></a>Bitbake Recipe Problems</h4>
+	There are lots of gotchas with developing recipes. 
+	<ul>
+	<li>If there is an error about files that are installed
+	but not shipped, the install path should refer to ${D}, but the FILES_${PN} paths should
+	not contain ${D}. Also files starting with a period may not work. The pkg_postinst function
+	might be used to rename them back to a file with a period after the packaging. The FILES_${PN} is
+	not needed in some standard default directory cases, so reading recipes can be confusing when
+	some have variables specified, and some do not. After installation, pkg_postinst puts files
+	in /var/lib/opkg/info/, and they can be run from a command line to see failures.</li>
+	<li>"No package ... found" might mean that DEPENDS needs to load the library. For example,
+	to lead gmodule, glib-2.0 is required.</li>
+	<li>Directory locations are important. Follow standard layouts for other projects. For example,
+	a zip file should contain a top level directory (${S}) possibly with a src directory under it,
+	depending on what the makefiles require.</li>
+	<li>I copied many parts of a recipe using leafpad as a GTK example. Many files are output as
+	the process of autotools. The two main types of input files are Makefiles and the 
+	configure.ac file.</li>
+	<li>If using autotools with "inherit autotools" and "nothing to configure"
+	displays, then make
+	sure there is a configure.ac in the proper directory. Bitbake does run autotools
+	automatically, but only if a proper directory structure of the source is found. Reading
+	autotools.bbclass, do_configure() function (under sources/openembedded-core/meta/classes) is
+	a way to see scripts for the tasks.</li>
+	<li>To test autotools configurations, run "autoscan &#8722;v", "aclocal",
+	"autoconf", "autoheader",
+	and "automake &#8722;ac" in the work directory of the project to be built. These
+	tools will display errors, etc. Then run "./configure", "make".
+	To see examples, do a fetch on leafpad or gedit
+	and look at the Makefile.am and configure.ac. The PKG_CHECK_MODULES macro may not 
+	work when running autotools manually.</li>
+	<li>Many autotools macros have changed over the years. There is a lot of old documentation
+	online.</li>
+	<li>Autotools case matters. GTK (variable) instead of Gtk in some places.</li>
+	<li>http://www.developingprogrammers.com/index.php/2006/01/05/autotools-tutorial/</li>
+	<li>If do_rootfs fails, make sure that the source files/zip files have the correct directory
+	structure. Also make sure ${D} is used for the destination directory for both creating
+	directories and copying files.</li>
+	<li>In some cases, a file that is used in a recipe won&#8217;t be transferred to the output even
+	if a clean with force is performed.  One way to rebuild is to change the PR revision, but
+	this can present other problems. There are some ways to delete the matching package files
+	under the /work/./build/ directory from the ccache and sstate-cache directories, then 
+	performing a clean. But the real answer is to use cleansstate (TWO SS). Another time, the
+	uImage was not put into the deploy directory. The date and time of the file was not updated.
+	After the "&#8722;c compile &#8722;f", the image may or may not be in the
+	work/beaglebone&#8722;.../linux&#8722;ti.../git/arch/arm/boot directory. The 
+	work/beaglebone&#8722;.../linux&#8722;ti.../image/boot directory is created minutes later that
+	also contains an image. Doing "-c cleansstate" or deleting
+	build/sstate-cache/sstate-linux-ti* is required
+	in order to force a new build. It looks like the deploy task moves the image into the final
+	deploy/images directory. The full build of virtual/kernel does not put the image into a
+	work/.../arch/arm/boot directory or the work/.../image directory if there is no change?</li>
+	<li>A fetch task is not performed for local files. An unpack is run to move the zip files
+	to the working directories.  An unpack will be performed as part of a "-c compile"
+	sequence.</li>
+	<li>One recipe would not perform a "do_install". I retyped the do_install and
+	it worked. This
+	is a whitespace or tab/space type problem. The ending brace was indented by one tab so that
+	it lined up with the other indented lines that it contained. The do_install in the run.doinstall
+	file in the temp directory called base_do_install(), and provided an empty base_do_install 
+	function.</li>
+	<li>The do_install() run's sh shell commands. If the install command returns "install: omitting directory",
+	then it means that a wildcard is used, and the subdirectories of the directory will not be created. This
+	will cause the do_install to fail.</li>
+	<li>Interesting discussion here about buildroot, openwrt, arago, oe:
+	http://www.beagleboard.org/irclogs/index.php?date=2012-05-04. Search for cleanstate (sp).</li>
+	</ul>
+
+	<h4><a class="mozTocH4" name="mozTocId955237"></a>Angstrom Directories</h4>
+	<table border="1">
+	<tbody><tr><th>Directory</th><th>Description</th></tr>
+	<tr><td>build/tmp-ang.../work/beaglebone.../linux-mainline...</td><td>Work directory for
+		linux kernel 3.8 and later</td></tr>
+	<tr><td>build/tmp-ang.../work/beaglebone.../linux-ti33x-psp.../git</td><td>
+		Work directory for linux kernel before 3.8</td></tr>
+	<tr><td>build/tmp-ang.../deploy/images</td><td>Built images and boot files.</td></tr>
+	<tr><td>build/tmp-ang.../deploy/ipk</td><td>Built packages. Can be opened with the "File Roller" archive
+		manager program.</td></tr>
+	</tbody></table>
+
+	<h4><a class="mozTocH4" name="mozTocId118328"></a>Bitbake/Angstrom Configure Kernel</h4>
+	From the setup-scripts directory, run:
+	<ul>
+	<li>MACHINE=beaglebone ./oebb.sh bitbake &#8722;c configure virtual/kernel</li>
+	<li>cd build/tmp-angstrom.../work/beaglebone-ang.../linux-tix-psp.../git</li>
+	<li>Use package manager to install libncurses5-dev</li>
+	<li>make menuconfig</li>
+	<li>Save the configuration </li>
+	<pre>	cp .config /sources/meta-ti/recipes-kernel/linux/linux-ti33x-psp-3.2/beaglebone/defconfig<br>	</pre>
+	<li>Then build the kernel as normal</li>
+	</ul>
+
+	<h4><a class="mozTocH4" name="mozTocId802501"></a>Compile Kernel</h4>
+	To make a change, change the .c file, then compile using:
+	<pre>	bitbake -c compile -f virtual/kernel<br>	</pre>
+	This may or may not perform a fetch or patches. Forcing a fetch can be done using
+	cleansstate, but this will also delete any modified sources in the working directories.
+	Then to build the image, use:
+	<pre>	bitbake virtual/kernel<br>	</pre>
+
+	<h3><a class="mozTocH3" name="mozTocId753161"></a>Bitbake/Angstrom Source Management</h3>
+	It can be difficult to get all of the source for a build, and then to save the source.
+	For example, while compiling, the linux source code will be in a working directory, and
+	then removed after the build.  The directory used to be
+	build/tmp-angstrom.../work/beaglebone-.../linux-ti33x-psp.../git, but in v2012-12, it is in
+	build/tmp-angstrom.../work/beaglebone-.../linux-mainline-.../git.
+	<p>
+	The kernel files could be saved by performing a fetch and applying patches, but there are
+	many other project files such as the files for GTK that may need to be saved also. And it is
+	difficult to run parts of recipes while saving files before the working directory source code
+	is removed.
+	</p><p>
+	Since the working directories are temporary, Angstrom provides a way to save mirror tarballs.
+
+	</p><h4><a class="mozTocH4" name="mozTocId355986"></a>Perform a build that saves tarballs</h4>
+	Edit the local.conf file to include: 
+	<pre>	SOURCE_MIRROR_URL ?= "file:///local mirror tarball directory"<br>	INHERIT += "own-mirrors"<br>	BB_GENERATE_MIRROR_TARBALLS = "1"<br>	</pre>
+	Delete the entire build directory, and source/downloads directory. Then:
+	<pre>	bitbake -c fetchall <target-image>
+	</target-image></pre>
+	When I did this, it said "msgfmt: command not found", so I then installed it again.
+	After that, the Source/downloads directory will contain tarballs. Copy all tarballs
+	to the mirror directory.
+	<h4><a class="mozTocH4" name="mozTocId292252"></a>Save Source</h4>
+	Save everything under setup-scripts except for the build directory.
+	Save the mirror tarball directory.
+
+	<h4><a class="mozTocH4" name="mozTocId595929"></a>Restore Source to another machine</h4>
+	For some reason, a copy of files will usually not restore the execute file
+	permissions. The following files must be executable:
+	<ul>
+	<li>oebb.sh</li>
+	<li>setup-scripts/scripts</li>
+	<li>setup-scripts/sources/bitbake/bin/bitbake</li>
+	<li>setup-scripts/sources/openembedded-core/scripts/bitbake</li>
+	<li>setup-scripts/sources/openembedded-core/scripts/gen-site-config</li>
+	</ul>
+	Delete the setup-scripts/sources/downloads directory.
+	Delete /setup-scripts/conf/sanity_info and site.conf.
+
+	<h4><a class="mozTocH4" name="mozTocId71918"></a>Build without network</h4>
+	To make sure you can build without network access you can add: BB_NO_NETWORK = "1" to
+	the local.conf file. I HAVE NOT BEEN ABLE TO GET THIS TO WORK. It fails at
+	libatasmart as mentioned below, I think while trying to check the SRCREV/git hash
+	version tag. Setup-scripts/sources/meta-openembedded/meta-oe/recipes-support/libatasmart.
+	The version can be seen at git.0pointer.de
+	<p>
+	For some reason, file libatasmart.git.tar.gz fetch failed. The .bb recipe is
+	overwritten when cleansstate is performed?
+
+  </p><h3><a class="mozTocH3" name="mozTocId187791"></a>Kernel Debugging (KGDB)</h3>
+	At the moment, this isn't working. The dgdbwait is causing a breakpoint exception.
+
+  <h3><a class="mozTocH3" name="mozTocId174133"></a>Boot Debugging</h3>
+	To change boot arguments, change "uEnv.txt" on the bootable image.
+	Change optargs= and add "no_console_suspend" as a parameter with no delimiters
+	(only use space) between arguments. Also add "loglevel=7" to optargs.
+	<p>
+	Connect a terminal (USB or Ethernet connection).
+	To verify boot settings, during boot, press Enter key on terminal.
+	Enter "printenv" and look for "optargs=".
+	</p><p>
+	To load uEnv.txt manually:
+	</p><ul>
+	<li>mmc rescan</li>
+	<li>run loadbootenv</li>
+	<li>run importbootenv</li>
+	<li>printenv</li>
+	<li>boot</li>
+	</ul>
+	If loglevel=7 is not used, then use dmesg, to set level:
+	<pre>	"dmesg &#8722;n 8"<br>	</pre>
+
+
+  <h3><a class="mozTocH3" name="mozTocId451059"></a>X11</h3>
+	I am having problems with creating an image with the correct xorg.conf.  It attempts
+	to pull in the BeagleBone conf file, and I have no idea how to specify to use one from my layer. 
+	Instead use:
+	<pre>	pkg_postinst_${PN}() {<br>	#!/bin/sh &#8211;e<br>	if [ "x$D" = "x"]; then		# D is null at first boot, but not when rootfs is made<br>	rm ${D}/etc/X11/xorg.conf<br>	mv ${D}/etc/X11/rot&#8722;xorg.conf ${D}/etc/X11/xorg.conf<br>	else<br>	exit 1<br>	fi<br>	}<br>	</pre>
+
+  <h3><a class="mozTocH3" name="mozTocId180398"></a>Linux / TI source code</h3>
+	The relationship of source code is complicated. For example, some BeagleBone fix may end
+	up in some users private git repository, then get moved to Arago, then moved to Linux or Open Embedded?
+	I don&#8217;t understand how source patches get moved around yet.
+	<a href="http://processors.wiki.ti.com/index.php/PSP_Linux_Development_FAQ">Linux TI PSP Development</a>
+
+
+
+<h1><a class="mozTocH1" name="mozTocId372043"></a>Creating Applications</h1>
+  <h2><a class="mozTocH2" name="mozTocId146692"></a>Set up an Application Build Environment</h2>
+  <h3><a class="mozTocH3" name="mozTocId527016"></a>Toolchain for Build</h3>
+	Developing under Windows or Linux requires cross compiling.  It appears that most
+	documentation is for compiling in Linux, but it seems fairly easy to perform most steps
+	for building an application in Windows.  I have not found a way to build the Angstrom OS
+	in Windows.
+	<p>
+	I found the toolchains from Angstrom only support Linux development, so instead used the
+	popular CodeSourcery MinGW toolchain.
+	</p><p>
+	It is important to get a CodeSourcery toolchain that
+	supports a target of Linux. The pages on Mentor Graphics say "for ARM GNU/Linux". Some versions
+	are barebones for a target device with no OS.  If a barebones target is used, the _start()
+	function will be undefined during linking. I found 
+	arm&#8722;2012.03&#8722;57&#8722;arm&#8722;none&#8722;linux&#8722;gnueabi from 
+	https://sourcery.mentor.com/sgpp/lite/arm/portal/release2187. In one case with a different build,
+	the install file did not install the cs&#8722;make file, but the tar version contained it.
+	</p><p>
+	New versions are released continuously and it is difficult to find a list of all releases.
+	It seems like Mentor Graphics makes it difficult in order to promote their sold version. The
+	release above does not require registration since it does not contain the workbench.
+
+  </p><h3><a class="mozTocH3" name="mozTocId120823"></a>Cross Compiling Overview</h3>
+	The following diagram shows an overview of the components for cross compiling applications.
+	The diagram shows a PC running Windows, but it is possible to have a PC running Linux
+	as well.
+	<p>
+
+
+
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.1 "
+   sodipodi:docname="BeagleCrossCompile.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.7"
+     inkscape:cx="369.39152"
+     inkscape:cy="598.36278"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:window-width="1004"
+     inkscape:window-height="981"
+     inkscape:window-x="644"
+     inkscape:window-y="96"
+     inkscape:window-maximized="0">
+    <inkscape:grid
+       type="xygrid"
+       id="grid3769" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#00ffff;fill-rule:evenodd;stroke:#000000;stroke-width:3.77624154px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="rect3848"
+       width="460"
+       height="620"
+       x="260"
+       y="132.36218" />
+    <rect
+       style="fill:#00ff00;fill-rule:evenodd;stroke:#000000;stroke-width:2.05603337000000020px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="rect3843"
+       width="180"
+       height="620"
+       x="20"
+       y="132.36218" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.50361013px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="rect2985"
+       width="100"
+       height="40"
+       x="600"
+       y="572.36218" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       x="620"
+       y="592.36218"
+       id="text3765"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3767"
+         x="620"
+         y="592.36218">MinGW</tspan></text>
+    <rect
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.67566389px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="rect2985-5"
+       width="120"
+       height="60"
+       x="460"
+       y="572.36218" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       x="480"
+       y="592.36218"
+       id="text3765-3"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3797"
+         x="480"
+         y="592.36218">Windows</tspan><tspan
+         sodipodi:role="line"
+         id="tspan3799"
+         x="480"
+         y="609.86218">GTK</tspan></text>
+    <rect
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.50361013px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="rect2985-55"
+       width="100"
+       height="40"
+       x="500"
+       y="672.36218" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       x="520"
+       y="692.36218"
+       id="text3765-6"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3825"
+         x="520"
+         y="692.36218">Windows</tspan></text>
+    <rect
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.67566395px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="rect2985-6"
+       width="120"
+       height="60"
+       x="580"
+       y="372.36218" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       x="600"
+       y="392.36218"
+       id="text3765-7"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3133">MinGW GNUC</tspan><tspan
+         sodipodi:role="line"
+         id="tspan3135">(I86 gcc, g++)</tspan></text>
+    <rect
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.67566395px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="rect2985-6-8"
+       width="120"
+       height="60"
+       x="280"
+       y="372.36218" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       x="300"
+       y="392.36218"
+       id="text3765-7-0"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3129">CodeSourcery</tspan><tspan
+         sodipodi:role="line"
+         id="tspan3131">(ARM gcc, g++)</tspan></text>
+    <rect
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.67566389px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="rect2985-5-5"
+       width="120"
+       height="60"
+       x="280"
+       y="572.36218" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       x="300"
+       y="592.36218"
+       id="text3765-3-9"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3930"
+         x="300"
+         y="592.36218">Linux</tspan><tspan
+         sodipodi:role="line"
+         id="tspan3932"
+         x="300"
+         y="609.86218">GTK</tspan></text>
+    <rect
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.67566389px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="rect2985-5-5-4"
+       width="120"
+       height="60"
+       x="280"
+       y="472.36218" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       x="300"
+       y="492.36218"
+       id="text3765-3-9-6"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3961"
+         x="300"
+         y="492.36218">Linux</tspan><tspan
+         sodipodi:role="line"
+         id="tspan3963"
+         x="300"
+         y="509.86218">App</tspan></text>
+    <rect
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.67566389px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="rect2985-5-5-4-2"
+       width="120"
+       height="60"
+       x="480"
+       y="472.36218" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       x="500"
+       y="492.36218"
+       id="text3765-3-9-6-6"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3992"
+         x="500"
+         y="492.36218">Windows</tspan><tspan
+         sodipodi:role="line"
+         id="tspan3994"
+         x="500"
+         y="509.86218">App</tspan></text>
+    <rect
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.55167729px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="rect2985-6-8-2"
+       width="120"
+       height="40"
+       x="460"
+       y="192.36218" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       x="480"
+       y="212.36218"
+       id="text3765-7-0-2"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4020"
+         x="480"
+         y="212.36218">Eclipse</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="300"
+       y="172.36218"
+       id="text4026"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4028"
+         x="300"
+         y="172.36218">PC</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="60"
+       y="172.36218"
+       id="text4030"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4032"
+         x="60"
+         y="172.36218">Beagle</tspan></text>
+    <rect
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.67566389px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="rect2985-6-8-2-2"
+       width="120"
+       height="60"
+       x="280"
+       y="192.36218" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       x="320"
+       y="212.36218"
+       id="text3765-7-0-2-0"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3121"
+         x="320"
+         y="212.36218">RSE</tspan><tspan
+         sodipodi:role="line"
+         id="tspan3123"
+         x="320"
+         y="229.86218">(ssh, ftp)</tspan></text>
+    <path
+       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.86602539;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 400,212.36218 60,0"
+       id="path4060"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:1.29099441;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 380,372.36218 100,-140"
+       id="path4062"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:1.87082875;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 600,372.36218 -60,-140"
+       id="path4064"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 340,432.36218 0,40"
+       id="path4066"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 340,532.36218 0,40"
+       id="path4068"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:1.41421354;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 600,432.36218 -40,40"
+       id="path4070"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 520,532.36218 0,40"
+       id="path4072"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 560,532.36218 80,40"
+       id="path4074"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 640,612.36218 -80,60"
+       id="path4076"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 500,632.36218 20,40"
+       id="path4078"
+       inkscape:connector-curvature="0" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.67566389px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="rect2985-5-5-7"
+       width="120"
+       height="60"
+       x="60"
+       y="572.36218" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       x="80"
+       y="592.36218"
+       id="text3765-3-9-66"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3930-1"
+         x="80"
+         y="592.36218">Linux</tspan><tspan
+         sodipodi:role="line"
+         id="tspan3932-4"
+         x="80"
+         y="609.86218">GTK</tspan></text>
+    <rect
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.50361013px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="rect2985-55-5"
+       width="100"
+       height="40"
+       x="79.999992"
+       y="672.36218" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       x="99.999992"
+       y="692.36218"
+       id="text3765-6-8"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4131"
+         x="99.999992"
+         y="692.36218">Linux</tspan></text>
+    <path
+       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 120,632.36218 0,40"
+       id="path4133"
+       inkscape:connector-curvature="0" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.67566389px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="rect2985-5-5-4-0"
+       width="120"
+       height="60"
+       x="60.000004"
+       y="472.36218" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       x="80"
+       y="492.36218"
+       id="text3765-3-9-6-1"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3961-9"
+         x="80"
+         y="492.36218">Linux</tspan><tspan
+         sodipodi:role="line"
+         id="tspan3963-7"
+         x="80"
+         y="509.86218">App</tspan></text>
+    <path
+       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 120,532.36218 0,40"
+       id="path4162"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 180,492.36218 100,0"
+       id="path4164"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:1.08012342;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 220,492.36218 60,-280"
+       id="path4166"
+       inkscape:connector-curvature="0" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.50361013px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="rect2985-6-8-8"
+       width="100"
+       height="40"
+       x="600"
+       y="272.36218" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       x="620"
+       y="292.36218"
+       id="text3765-7-0-24"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3076"
+         x="620"
+         y="292.36218">MinGW</tspan><tspan
+         sodipodi:role="line"
+         id="tspan3078"
+         x="620"
+         y="309.86218">includes</tspan></text>
+    <path
+       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:1.2247448;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 640,312.36218 0,60"
+       id="path3080"
+       inkscape:connector-curvature="0" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.50361013px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="rect2985-6-8-8-3"
+       width="100"
+       height="40"
+       x="440"
+       y="392.36218" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       x="460"
+       y="412.36218"
+       id="text3765-7-0-24-5"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3109">App Source</tspan></text>
+    <path
+       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 540,412.36218 40,0"
+       id="path3111"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 400,412.36218 40,0"
+       id="path3113"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:1.41421354;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 500,232.36218 0,160"
+       id="path3115"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 180,592.36218 100,0"
+       id="path3117"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.9819805;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 220,592.36218 60,-360"
+       id="path3119"
+       inkscape:connector-curvature="0" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.50361013px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="rect2985-6-8-8-7"
+       width="100"
+       height="40"
+       x="300"
+       y="292.36218" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       x="320"
+       y="312.36218"
+       id="text3765-7-0-24-8"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3197">GTK</tspan><tspan
+         sodipodi:role="line"
+         id="tspan3199">includes</tspan></text>
+    <path
+       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 340,332.36218 0,40"
+       id="path3164"
+       inkscape:connector-curvature="0" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.50361013px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="rect2985-6-8-8-7-3"
+       width="100"
+       height="40"
+       x="80"
+       y="292.36218" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       x="100"
+       y="312.36218"
+       id="text3765-7-0-24-8-2"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3201">GTK</tspan><tspan
+         sodipodi:role="line"
+         id="tspan3203">includes</tspan></text>
+    <path
+       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 180,312.36218 120,0"
+       id="path3193"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 280,192.36218 -60,120"
+       id="path3195"
+       inkscape:connector-curvature="0" />
+  </g>
+</svg>
+
+
+</p><ul>
+	<li>Eclipse is used as the editor and IDE.</li>
+	<li>Eclipse can be used to build the same App Source and produce an application that will run on Windows
+	   or the Beaglebone. This will result in some features working differently in Windows or the Beaglebone.</li>
+	<li>Some things that can work the same are USB, graphical windows, serial port, etc.</li>
+	<li>After the Linux application is compiled on Windows, RSE can be used to copy the application to
+	    the Beaglebone.</li>
+	<li>It is possible to remote debug the application that is running on the Beaglebone with source code
+	breakpoints, etc.</li>
+	</ul>
+  <h3><a class="mozTocH3" name="mozTocId699983"></a>Download Eclipse</h3>
+	The BeagleBone project is also supported by TI, and so many places suggest Code Composer
+	Studio which requires registration. The CCS from TI is built on Eclipse and the CodeSourcery
+	toolchain, which are easily available elsewhere, so I just downloaded Eclipse and CodeSourcery
+	separately.
+	<p>
+	Eclipse requires the Java Runtime Environment (JRE). Download it from Oracle.
+	Download Eclipse for C++ from 
+	http://www.eclipse.org/downloads/download.phpfile=/technology/epp/downloads/
+	release/juno/R/eclipse&#8722;cpp&#8722;juno&#8722;win32.zip
+	</p><p>
+	There is no need to set the Windows path to CodeSourcery bin directory.  When there are two build
+	targets (Windows and ARM), it is better to set the paths inside of Eclipse in the projects.
+
+  </p><h3><a class="mozTocH3" name="mozTocId798363"></a>Create an Eclipse Project</h3>
+	Create in Eclipse using File/New/C++ Project. For Project Type, uncheck the "Show project types"
+	checkbox, use Executable, then Empty Project. Choose the MinGW GCC toolchain to build an executable
+	for Windows.
+	<p>
+		<i>I am not sure if it is possible to use an autotools project, but if it is, this
+		should reduce setup in Eclipse. A very thorough article describing autotools is
+		http://www.freesoftwaremagazine.com/articles/building_shared_libraries_once_using_autotools</i>
+	</p><p>
+	Right click on the created project in the Project Explorer and select Build Configurations/Manage.
+	Create a new configuration for CodeSourcery.
+
+	</p><p>
+	Right click on project and select properties. Select C/C++ Build, then Settings/Tool Settings. For
+	the CodeSourcery configuration, change each build tool "Command" entry to be prefixed with
+	"arm&#8722;none&#8722;linux&#8722;gnueabi&#8722;", so for example, the C++ compiler will
+	be arm&#8722;none&#8722;linux&#8722;gnueabi&#8722;g++.
+	</p><p>
+
+	</p><p>
+	There are two ways to set up the tool chain. The first method is preferred.
+	</p><ul>
+	<li>
+	Set the toolchain by going to "Properties/C/C++ Build/Tool Chain Editor" and set the
+	toolchain to "Cross GCC" and set the builder to "CDT Internal Builder". This will add a "Cross Settings"
+	selction under the "C/C++ Build/Settings/Tool Settings" tab. Set the prefix to
+	arm&#8722;none&#8722;linux&#8722;gnueabi&#8722;	and set the path to 
+	C:\Program Files\CodeSourcery\Sourcery_CodeBench_Lite_for_ARM_GNU_Linux\bin.
+	</li>
+	<li>
+	Set the toolchain includes by setting Properties/C/C++ Build/Discovery Options/GCC C++ Compiler
+	and set the "Compiler invocation command" to arm&#8722;none&#8722;linux&#8722;gnueabi&#8722;g++
+	for the CodeSourcery
+	configuration.
+	Set the path in Properties/C/C++ Build/Environment/
+	and add a PATH variable that contains
+	C:\Program Files\CodeSourcery\Sourcery_CodeBench_Lite_for_ARM_GNU_Linux\bin.
+	</li>
+	</ul>
+	Set additional project (other library) includes by Project Properties, C/C++
+	General/Paths and Symbols/Includes for the GNU C++ entry.
+	<p>
+	To get symbols to show properly in the editor, set the C/C++ Build/Discovery Options
+	for the C++ compiler to arm-none-linux-gnueabi-g++.
+	</p><p>
+	This should be enough to compile a program with minimal dependencies. For example, it is
+	possible to blink the LED using fopen, etc.
+	</p><p>
+	Setting relative include paths is not straightforward. You may have to enter something like
+		${ProjDirPath}/../../Source/file, and don&#8217;t check the "Is a workspace path" button.
+	</p><p>
+	There are multiple places to enter libraries to be included in a component. The best place
+	to enter the dependency is in Properties/C/C++ General/Paths and Symbols/References/.
+	</p><p>
+	Set Window/Preferences/C/C++/Indexer/Use active build configuration so that the warnings
+	highlight according to the configuration?
+
+  </p><h3><a class="mozTocH3" name="mozTocId563590"></a>Moving workspace/project</h3>
+	It is possible to create a new workspace that can contain many projects. Use File/Switch Workspace,
+	then "Other" to create a new workspace in a new directory. If you already have an eclipse project
+	in another workspace that you would like to move to this workspace, first copy all project files
+	into this workspace directory. Then use File/Import and select General/Existing Projects into
+	Workspace. Then select the directory that contains the project.
+
+  <h3><a class="mozTocH3" name="mozTocId933198"></a>Eclipse Problems</h3>
+	Here is a list of a few Eclipse problems I had.
+	<ul>
+	<li>The compile may only execute a few files and then stop
+	if the build output directories don&#8217;t exist. A Clean removes the output directories.</li>
+	<li>At some times, the compile of a project may fail and give an error about a missing
+	include file, when it worked previously. Once the project configuration is set up, these
+	problems do not occur anymore. It sometimes takes some time for iconic errors to go away.
+	A manual build may be required or sometimes it is even required to restart Eclipse.</li>
+	<li>An output file may not be created, but it can be difficult to see which error caused
+	the problem. A build log is created in ".metadata\.plugins\org.eclipse.cdt.ui". Look in
+	Window/Preferences/C/C++/Build/Logging to find the root of the path.</li>
+	<li>During cross compiling, the project may completely build without errors, but
+	a loadModules call was failing while calling a function pointer to the module. The error
+	was "symbol lookup error". The actual problem was the library link order during build. It can
+	change every time that the active build configuration changes.</li>
+	</ul>
+  <h3><a class="mozTocH3" name="mozTocId625284"></a>Copying Files and Remote System Explorer</h3>
+	Copying files to the Beagle is done by using the Remote System Explorer in Eclipse.
+	Installation is explained in the Debugging section in this document. It is possible to
+	drag and drop or cut/paste files to or from the remote paths displayed in the Remote
+	System Explorer. It is also possible to run commands on the remote Beagle target in
+	the terminal shell. It is possible to view processes and kill them, but it is faster
+	by using the terminal by using "ps &#8722;A", and "kill <i>ps number"</i>
+  <h3><a class="mozTocH3" name="mozTocId599301"></a>Eclipse Remote Debugging</h3>
+	Go to Help/Install in Eclipse and select "All Available Sites". Then expand Mobile and Device
+	Development and select:
+	<ul>
+	<li>C/C++ GDB Hardware Debugging</li>
+	<li>C/C++ Remote Launch</li>
+	<li>Remote System Explorer End&#8722;User Runtime</li>
+	<li>Remote System Explorer User Actions</li>
+	</ul>
+	Remote system explorer allows viewing directories and files on the target, viewing processes,
+	and using an SSH terminal.
+	<p>
+	To set up Remote System Explorer:
+	</p><ul>
+	<li>Window/Open Perspective/Remote System Explorer. Right click in system explorer and select
+	New Connection, then Linux. Select a host name of 192.168.7.2. Other sections in this document
+	describe how to find the IP address of the beaglebone.
+	Name the connection "bone".</li>
+	<li>Select ssh.files, then Next.</li>
+	<li>Select processes.shell.Linux, then Next.</li>
+	<li>Select ssh.shells, then Next.</li>
+	<li>Select ssh.terminals, then Finish.</li>
+	</ul>
+	Remember the username is root with no password.
+	<p>
+	To set up the debugger:
+	</p><ul>
+	<li>Set the active configuration to the remote app to debug.</li>
+	<li>Select Run/Debug Configuration, then C/C++ Remote Application</li>
+	<li>Right click on C/C++ Remote Application and select New.</li>
+	<li>Set the C/C++ Application to the local CodeSourcery-Debug/TestApp.exe</li>
+	<li>For the remote file path, something like: "/home/root/TestApp.exe".</li>
+	<li>For commands to execute before application:"chmod 777". This didn&#8217;t
+	work for me, once the executable was copied successfully, then I used a terminal to do the
+	chmod. May have to run chmod 777 on the parent debug directory to give rights to do chmod?
+	Remember to also run chmod on all shared libraries.</li>
+	<li>In Debug Configurations, Debugger tab, set the GDB debugger to the CodeSourcery
+	debugger on the Windows PC:"
+	C:\Program Files\CodeSourcery\Sourcery_CodeBench_Lite_for_ARM_GNU_Linux\
+	bin\arm&#8722;none&#8722;linux&#8722;gnueabi&#8722;gdb.exe
+	"</li>
+	<li>Copy the CodeSourcery gdbserver to the BeagleBone.  The gdbserver is in
+	arm&#8722;none&#8722;linux&#8722;gnueabi/libc/usr/bin. I copied to the executable directory for now.</li>
+	<li>Create a .gdbinit file in the application directory and enter the line "set sysroot
+	/TargetFiles". The gdbinit file is defined in menu Window\preferences\C/C++\Debug\GDB
+	and resides on the devlopment PC.</li>
+	<li>Run the debugger by doing Run/Debug Configurations, then pressing the Debug button on
+	that page.</li>
+	<li>To get shared libraries to work with the debugger, it is easiest if the shared library is
+	installed into the executable output path for Eclipse (Not under C:\TargetFiles). In the Console
+	window while debugging, it is possible to see the current path with pwd. Also for errors, pay
+	attention to paths of files.
+	Eclipse	will still display the feared "no source file named ..." for shared libraries, but the
+	breakpoint will be hit.</li>
+	<li>See Debugging Graphics for more things like "export DISPLAY=:0.0"</li>
+	</ul>
+
+  <h3><a class="mozTocH3" name="mozTocId384860"></a>GTK on the Development PC</h3>
+	This step describes a method of uploading the GTK files from the BeagleBone to the development PC
+	for cross compiling.
+	<p>
+	I am not sure if all GTK development files are on the BeagleBone. Some of the include
+	files are present, but the libraries may not be. As of 5-5-2013, it looks like there are now
+	GTK 3.0 files available for Angstrom in the package feed browser.  I am not sure when they were added.
+	The Remote System Explorer shows that GTK 2.0
+	is on the Beaglebloard with the Cloud9 Agstrom release that was installed previously in this document.
+	</p><p>
+	On the Beagle, click on Application/Accessories/Terminal. Enter "opkg install
+	libglib&#8722;2.0&#8722;dev".
+	Enter "opkg install gtk+&#8722;dev".
+	</p><p>
+	It is possible to download GTK, and build and run on the PC. To download GTK3 for Windows,
+	get the software from this link <a href="http://www.tarnyko.net/en/?q=node/20">www.tarnyko.net/en</a>,
+	described here:<br><a href="http://stackoverflow.com/questions/6006689/where-can-i-download-precompiled-gtk-3-binaries-or-windows-installer">
+	where-can-i-download-precompiled-gtk-3-binaries-or-windows-installer</a>.
+	</p><p>
+	It may be possible to download GTK, and build on the PC, but alternatively it is possible to copy
+	the files  from the beagleboard using the remote system explorer. Create a
+	"\TargetFiles\usr\include"
+	directory on the Windows PC. Also create a \TargetFiles\usr\lib directory. The path
+	cannot have spaces.
+	</p><p>
+	Setup files using the Local Files\Drives in the RSE:
+	</p><ul>
+	<li>Copy the needed includes (glib&#8722;2.0, gtk&#8722;2.0) from /usr/include to
+	C:/TargetFiles/usr/include</li>
+	<li>Copy all files from /usr/lib to C:/TargetFiles/usr/lib</li>
+	<li>Copy all files from /lib to C:/TargetFiles/lib</li>
+	<li>Set up paths in Eclipse to point to the TargetFiles/usr/include directory and others</li>
+	<li>For signals to work for GTK, the module must be linked so that dynamic signals are available.
+	In Properties/C/C++ Build/Settings/Tool Settings/MinGW C++ Linker/Miscellaneous,
+	add &#8722;export&#8722;dynamic in the "Other options" box. The linker command line
+	will end up having
+	"&#8722;sysroot=/TargetFiles   &#8722;Xlinker  &#8722;export&#8722;dynamic".
+	Use "readelf &#8722;s progname"
+	to see dynamic symbols.</li>
+	<li>Change swprintf to snwprintf. Or vise&#8722;versa depending on platform.</li>
+	<li>If you are going to add a library from within the project, add a reference, and the
+	library and library path are set automatically.</li>
+	<li>Add &#8722;mms&#8722;bitfields to compiler switches.</li>
+	</ul>
+	To get more files on the target computer, use "opkg install
+	libgtksourceview&#8722;2.0&#8722;dev", which
+	includes glib and gtk dev files.
+	<p>
+	It looks like the current version of libglib&#8722;2.0 on the BeagleBone
+	is glib&#8722;2.30.3.tar.bz2.
+
+
+  </p><h3><a class="mozTocH3" name="mozTocId260595"></a>Debugging Startup Problems</h3>
+	First make sure you can connect a terminal as described elsewhere in this document.
+	This will use debugging graphics as an example.
+	<p>
+	Use "dmesg" to dump the boot log.  The Beaglebone cape should show up in the log. If not
+	see "beaglebone-capes" elsewhere in this document.
+	</p><p>
+	Use "ps" to see which programs are runnig. There should be a "gdm-binary" program that is
+	the gnome display manager service. There should also be a "gdm-session-worker", and then
+	a "gnome-session".
+	</p><p>
+	Check the /var/log/Xorg.0.log file. In my case there are many errors, but the important
+	point is that FBDEV is working.
+	</p><p>
+	Another log is at /var/log/gdm
+	</p><p>
+	Use "systemctl &gt; temp.txt; cat temp.txt". You can check an individual service with
+	"systemctl status service-name". systemctl restart gdm.service,
+	sudo systemctl enable gdm.service -f
+	</p><p>
+	Use "opkg list" to view packages that were installed.
+	</p><p>
+	For X11, the following may need to be checked /etc/X11/xorg.conf. The /usr/share/xsessions
+	directory may have a gnome.desktop file to autostart an application.  The startup home user
+	directory may have a .xsession file.
+	</p><p>
+	Try "startx" to see if X starts. Then run your startup program from there. To do this, you
+	may need to use a USB keyboard plugged into the beagle.
+	</p><p>
+	Run opkg update. I ran opkg install gnome-junk or some invalid package, and it reconfigured
+	gnome, and the graphics worked.
+
+
+  </p><h2><a class="mozTocH2" name="mozTocId293276"></a>Application Software</h2>
+  <h3><a class="mozTocH3" name="mozTocId217850"></a>Code Differences on Windows and Linux</h3>
+	Some of the differences on Windows and Linux are:
+	<ul>
+	<li>Comm port names, serial I/O functions</li>
+	<li>Paths can be different (screen builder files/resource files)</li>
+	<li>Exported functions are different. Linux: applications should instead be compiled
+	with the &#8722;Wl,&#8722;&#8722;export&#8722;dynamic CFLAGS, and linked against gmodule&#8722;
+	export&#8722;2.0. See
+	gtk_builder_connect_signals. I accidentally had a function in a shared library and
+	also in the executable as a dynamically available function. The shared library used
+	the function from the executable in Linux. This is not possible in Windows.</li>
+	<li>The type wchar_t is 16 bits on Windows and GNU Windows, but 32 bits on Arm.
+	"Windows Unicode support was introduced with Windows NT in 1993, whereas Unicode was
+	only extended beyond 16 bits with version 2.0 in 1996. Cygwin was first released the
+	year before. If the Unicode extension was a consideration at all (which I&#8217;d doubt),
+	wchar_t !=WCHAR probably seemed far more daunting than having to deal with surrogates
+	at some point down the line."</li>
+	<li>A window will not be positioned or sized correctly if it doesn&#8217;t fit on the
+	screen. The Gnome panel appears also.</li>
+	</ul>
+  <h4><a class="mozTocH4" name="mozTocId213515"></a>MinGW and Serial Port</h4>
+	It is possible to cross compile for the Beagle, and to also have a large part of the application
+	running on Windows.  For example, it is possible to use MinGW to read/write the serial port on
+	Windows, and to use the Linux fopen commands to read/write on Linux.  This code must be conditionally
+	compiled since MinGW is not needed on the BeagleBone. I used the mingw that came with QtCreator,
+	since I sometimes use Qt, but it may makes sense to get mingw separately.
+
+  <h3><a class="mozTocH3" name="mozTocId440554"></a>GPIO</h3>
+	Display all GPIO
+	<pre>	cat /sys/kernel/debug/omap_mux/board/core<br>	</pre>
+	The LED&#8217;s can be seen by running:
+	<pre>	ls /sys/class/leds/beaglebone::usr<br>	</pre>
+	To power off the LCD:
+	<pre>	echo 4 &gt; /sys/class/graphics/fb0/blank<br>	</pre>
+	To power on the LCD:
+	<pre>	echo 0 &gt; /sys/class/graphics/fb0/blank<br>	</pre>
+
+  <h3><a class="mozTocH3" name="mozTocId57688"></a>Power Consumption</h3>
+	To suspend the BeagleBone, do
+	<pre>	echo mem &gt; /sys/power/state<br>	</pre>
+	This will call the "suspend()" function for all drivers.
+	The date command can be used to see that the clock keeps running
+	while suspended.
+	<p>
+	To turn on tracing:
+	</p><pre>	echo 1 &gt; /sys/kernel/debug/tracing/events/power/enable<br>	</pre>
+	To display the current governor:
+	<pre>	cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor<br>	</pre>
+	On the BeagleBone, the current governor "performance".
+	To display all governors:
+	<pre>	cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors<br>	</pre>
+	This shows: "conservative, ondemand, userspace, powersave, performance"
+	<p>
+	To re&#8722;enable wake from touchscreen, use the following. It is already set to
+	enabled at startup on the BeagleBone:
+	</p><pre>	echo enabled &gt; /sys/devices/platform/omap/tsc/power/wakeup<br>	</pre>
+  <h4><a class="mozTocH4" name="mozTocId86006"></a>Kernel Suspend Test Support</h4>
+	<ul>
+	<li>http://www.kernel.org/doc/Documentation/power/basic&#8722;pm&#8722;debugging.txt</li>
+	<li>The following works, where keyword can be freezer, devices, platform, processors,
+	or core:</li>
+	<li>echo keyword &gt; /sys/power/pm_test</li>
+	<li>echo mem &gt; /sys/power/state</li>
+	<li>when keyword is processors, screen sometimes doesn&#8217;t get restored?, Function
+	am33xx_pm_suspend() is not run.</li>
+	</ul>
+
+  <h3><a class="mozTocH3" name="mozTocId584339"></a>Wakeup</h3>
+  <h4><a class="mozTocH4" name="mozTocId388900"></a>Touchscreen wakeup</h4>
+	The section in the TI reference manual is "12.1. TSC_ADC". The touchscreen wakeup is already
+	enabled in the BeagleBone.
+  <h4><a class="mozTocH4" name="mozTocId787566"></a>GPIO wakeup</h4>
+	Using the GPIO for wakeup at the moment requires modifications to the Kernel.
+	The only GPIO that can be used for GPIO wakeup on the BeagleBone is GPIO0_7 since it is the
+	only GPIO0 that is brought out to the expansion headers.
+
+
+  <h3><a class="mozTocH3" name="mozTocId757020"></a>Internationalization/Localization</h3>
+	The GNU gettext tools can be used for translating strings for Glade, and other strings
+	in source files. There are a few steps to producing string files.
+  <h3><a class="mozTocH3" name="mozTocId275238"></a>Gettext</h3>
+    <h4><a class="mozTocH4" name="mozTocId219974"></a>Gettext Overview</h4>
+
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="500"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.1 "
+   sodipodi:docname="BeagleBone-locale.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1"
+     inkscape:cx="184.58511"
+     inkscape:cy="299.92419"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:window-width="1155"
+     inkscape:window-height="824"
+     inkscape:window-x="337"
+     inkscape:window-y="103"
+     inkscape:window-maximized="0">
+    <inkscape:grid
+       type="xygrid"
+       id="grid3013" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     style="display:inline">
+    <rect
+       style="fill:#00ffff;fill-rule:evenodd;stroke:#000000;stroke-width:0.34875125px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="rect2985"
+       width="230"
+       height="40"
+       x="40"
+       y="130" />
+    <rect
+       style="fill:#00ffff;fill-rule:evenodd;stroke:#000000;stroke-width:0.46465081000000003px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1"
+       id="rect3003"
+       width="230"
+       height="40"
+       x="170"
+       y="300" />
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Sans"
+       x="50"
+       y="160"
+       id="text3017-7"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3019-3"
+         x="50"
+         y="160">Pre-translated file (.pot)</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Sans"
+       x="180"
+       y="325"
+       id="text3017-7-2"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="180"
+         y="325"
+         id="tspan2992">Post-translated file (.po)</tspan></text>
+    <rect
+       style="fill:#00ff00;fill-rule:evenodd;stroke:#000000;stroke-width:0.46465081px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline"
+       id="rect3003-5"
+       width="230"
+       height="40"
+       x="170"
+       y="380" />
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Sans"
+       x="180"
+       y="405"
+       id="text3017-7-2-1"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="180"
+         y="405"
+         id="tspan2992-8">Binary file (.mo)</tspan></text>
+    <rect
+       style="fill:#fffc00;fill-rule:evenodd;stroke:#000000;stroke-width:0.34875125000000001px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline;fill-opacity:1"
+       id="rect2985-3"
+       width="230"
+       height="40"
+       x="40"
+       y="40" />
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Sans"
+       x="50"
+       y="70"
+       id="text3017-7-26"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3019-3-8"
+         x="50"
+         y="70">Source file (.cpp)</tspan></text>
+    <path
+       style="fill:#00ff00;fill-opacity:1;stroke:#000000;stroke-width:0.559017;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;display:inline"
+       d="m 130,80 0,50"
+       id="path3015-4"
+       inkscape:connector-curvature="0" />
+    <rect
+       style="fill:#00ffff;fill-rule:evenodd;stroke:#000000;stroke-width:0.34875125px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline"
+       id="rect2985-33"
+       width="230"
+       height="40"
+       x="310"
+       y="130" />
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Sans"
+       x="320"
+       y="160"
+       id="text3017-7-4"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3019-3-5"
+         x="320"
+         y="160">Pre-translated file (.pot)</tspan></text>
+    <rect
+       style="fill:#fffc00;fill-rule:evenodd;stroke:#000000;stroke-width:0.34875125000000001px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline;fill-opacity:1"
+       id="rect2985-3-4"
+       width="230"
+       height="40"
+       x="310"
+       y="39.999992" />
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Sans"
+       x="320"
+       y="69.999992"
+       id="text3017-7-26-0"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3019-3-8-5"
+         x="320"
+         y="69.999992">Source file (.glade)</tspan></text>
+    <path
+       style="fill:#00ff00;fill-opacity:1;stroke:#000000;stroke-width:0.559017;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;display:inline"
+       d="m 400,80 0,50"
+       id="path3015-4-9"
+       inkscape:connector-curvature="0" />
+    <rect
+       style="fill:#00ffff;fill-rule:evenodd;stroke:#000000;stroke-width:0.34875125px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline"
+       id="rect2985-0"
+       width="230"
+       height="40"
+       x="160"
+       y="220" />
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Sans"
+       x="170"
+       y="250"
+       id="text3017-7-1"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3019-3-3"
+         x="170"
+         y="250">Pre-translated file (.pot)</tspan></text>
+    <path
+       style="fill:#00ffff;fill-opacity:0;stroke:#000000;stroke-width:0.98900002;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 400,170 -80,50"
+       id="path3142"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:#00ffff;fill-opacity:0;stroke:#000000;stroke-width:0.98900002;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 140,170 80,50"
+       id="path3144"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:#00ffff;fill-opacity:0;stroke:#000000;stroke-width:0.98900002;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 270,340 0,40"
+       id="path3146"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:#00ffff;fill-opacity:0;stroke:#000000;stroke-width:0.98900002;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 270,260 0,40"
+       id="path3148"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="280"
+       y="370"
+       id="text3177"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3179"
+         x="280"
+         y="370">msgfmt</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Sans"
+       x="280"
+       y="290"
+       id="text3177-4"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3179-1"
+         x="280"
+         y="290">copy / cp</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Sans"
+       x="140"
+       y="110"
+       id="text3177-1"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3179-7"
+         x="140"
+         y="110">gettext</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Sans"
+       x="410"
+       y="110"
+       id="text3177-1-4"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3179-7-0"
+         x="410"
+         y="110">gettext</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Sans"
+       x="210"
+       y="200"
+       id="text3177-1-9"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3179-7-4"
+         x="210"
+         y="200">msgcat</tspan></text>
+  </g>
+</svg>
+
+
+<ul>
+    <li>The gettext program will parse CPP or glade source files and output text files that
+	can be translated.</li>
+    <li>The text files can be either translated separately, or they can be concattenated
+	together using msgcat.</li>
+    <li>The translator edits the pot files</li>
+    <li>The pot file(s) are translated to binary using the msgfmt tool.</li>
+    </ul>
+
+    <h4><a class="mozTocH4" name="mozTocId724995"></a>Gettext Notes</h4>
+    It is difficult to find details on the gettext tools and locale. Here are some notes:
+    <ul>
+	<li>The locale setting is usually set per process. The locale can be set by an
+	environment variable in the shell, or by using the setlocale() C function.</li>
+	<li>The return from setlocal will return NULL if the locale is not loaded in the OS.</li>
+	<li>There is a locale program that can be used to see which locales are loaded on the OS.
+	Use "locale -a".</li>
+	<li>The locale listed by "locale -a" must be what is used to set the locale using
+	the environment variables or the setlocale function. For example, if es_ES.utf8 is listed,
+	then using only es_ES may not work.</li>
+	<li>When a program starts up, it may have the C locale.</li>
+	<li>The setlocale function will not set the locale for the whole OS, and so it is not
+	saved between sessions.</li>
+	<li>Many Linux operating systems will load locale packages in different ways.</li>
+	<li>Each application must provide its own locale strings.</li>
+	<li>If libintl.h is included, then libintl_printf will be an undefined reference during
+	the link. The cout used in the test program below does not have this problem. Under
+	Angstrom, I did not find any way to get around the printf problem, but since I am
+	using a GTK program, and only use printf for debugging, it is not a problem. This link
+	has most of the needed information under libintl_gettext.
+	<a href="http://www.gnu.org/software/gettext/FAQ.html#integrating_howto">Gettext FAQ</a>
+	</li>
+    </ul>
+
+    <h4><a class="mozTocH4" name="mozTocId189056"></a>Ubuntu</h4>
+	<ul>
+	<li>To load a locale in Ubuntu, view the main menu, and select Settings/Language
+	Support.</li>
+	<li>Add "Spanish, Castilian"</li>
+	<li>The language list will display Espanol for "Espania" and "Mexico" and can
+	be grayed out.</li>
+	<li>Use "locale -a" to see the available locales.</li>
+	</ul>
+
+    <h4><a class="mozTocH4" name="mozTocId210301"></a>Angstrom</h4>
+	<ul>
+	<li>The locale program is in the glibc-utils package.</li>
+	<li>The locale packages are named something like locale-base-LL-VV, where the
+	LL is the locale, and VV is the variant. An example is "locale-base-en-us".</li>
+	<li>For some reason, the locale packages cannot be installed directly, so first
+	browse to "http://feeds.angstrom-distribution.org/feeds/v2012.05/ipk/eglibc/armv7a/locales/es/"
+	and download manually. Then install using "opkg install locale-base-es-es...ipk"</li>
+	<li>Search under /usr/lib/locale to see existing locales or use "locale -a".</li>
+	<li>Another package that will be installed is: eglibc-binary-localedata-en-us.
+	In the Angstrom feed browser, search for "eglibc-binaries".</li>
+	<li>The following shows how to add a locale of es_ES.utf8. Use: "opkg install glibc-utils
+	localedef glibc-charmap-utf-8 glibc-localedata-es-es". Then use:
+	"localedef -c -i es_ES -f UTF-8 es_ES.utf8".</li>
+	</ul>
+
+    <h4><a class="mozTocH4" name="mozTocId341228"></a>GTK</h4>
+	<ul>
+	<li>Evidently the gtk_init function calls the gtk_set_locale function. The
+	gtk_set_locale function must be reading the environment instead of the C
+	library locale. Note that this may prevent or cause the wrong translations.</li>
+	<li>The gtk_disable_setlocale function can be used to prevent gtk_init from
+	calling gtk_set_locale.</li>
+	<li>If the gtk_disable_setlocale function is used, it is possible to use the C
+	library setlocale function before the gtk_init function, and the strings will
+	be translated. If the setlocale C function is used after the gtk_init, some
+	things may be translated and some may not.</li>
+	</ul>
+
+    <h4><a class="mozTocH4" name="mozTocId518557"></a>Localization Test Example</h4>
+	The following shows a simple example copied mainly from the stack overflow web site.
+	This example works on Linux. I first tested under Ubuntu, and the tested under Angstrom.
+	<p>
+	Simply copy all of the following text into a .sh file, and make it executable.
+	</p><pre>	cat &gt;testintl.cpp &lt;&lt;EOF<br>	#include &lt;libintl.h&gt;<br>	#include &lt;locale.h&gt;<br>	#include &lt;iostream&gt;<br>	#include &lt;string&gt;<br>	#include &lt;cstdlib&gt;<br>	int main(int argc, const char *argv[])<br>	    {<br>	    char* s = getenv("LANG");<br>	    std::cout &lt;&lt; "getenv(LANG): " &lt;&lt; (s?s:"NULL") &lt;&lt; std::endl;<br>	<br>	    s = setlocale(LC_ALL, NULL);<br>	    std::cout &lt;&lt; "get locale(): " &lt;&lt; (s?s:"NULL") &lt;&lt; std::endl;<br><br>	    if(argc &gt; 1)<br>		s = setlocale(LC_ALL, argv[1]);<br>	    else<br>		s = setlocale(LC_ALL, "");<br>	    std::cout &lt;&lt; "setlocale(): " &lt;&lt; (s?s:"NULL") &lt;&lt; std::endl;<br><br>	    s = getenv("LANG");<br>	    std::cout &lt;&lt; "getenv(LANG): " &lt;&lt; (s?s:"NULL") &lt;&lt; std::endl;<br><br>	    s = setlocale(LC_ALL, NULL);<br>	    std::cout &lt;&lt; "get locale(): " &lt;&lt; (s?s:"NULL") &lt;&lt; std::endl;<br><br>	    std::string p = getenv("PWD");<br>	    p += "/locale";<br>	    std::cout &lt;&lt; "bindtextdomain(): " &lt;&lt; bindtextdomain("testintl",<br>		p.c_str()) &lt;&lt; std::endl;<br>	    textdomain( "testintl");<br>	    std::cout &lt;&lt; gettext("This is a test") &lt;&lt; std::endl;<br>	    }<br>	EOF<br>	g++ -otestintl testintl.cpp<br>	mkdir locale<br>	xgettext -d testintl -o locale/testintl.pot testintl.cpp<br>	msginit --no-translator -l locale/es_ES -o testintl_spanish.po -i locale/testintl.pot<br>	sed --in-place testintl_spanish.po --expression='/#: /,$ s/""/"Esto es una prueba"/'<br>	sed --in-place testintl_spanish.po --expression='s/PACKAGE VERSION/testintl 1.0/'<br>	mkdir -p locale/es_ES/LC_MESSAGES<br>	msgfmt -c -v -o locale/es_ES/LC_MESSAGES/testintl.mo testintl_spanish.po<br>	export LANG=en_US.utf8<br>	ls -l $PWD/locale/es_ES/LC_MESSAGES/testintl.mo<br>	echo "--------"<br>	./testintl es_ES<br>	echo "--------"<br>	./testintl es_ES.utf8<br>	echo "--------"<br>	export "LANG=es_ES.utf8"<br>	strace -e trace=open ./testintl<br>	</pre>
+
+    <h4><a class="mozTocH4" name="mozTocId335942"></a>Create the .po files</h4>
+	The following shows an example of how to create the po files using a DOS batch file
+	under Windows.  This will create a po file from the glade file, and two cpp source files.
+	<pre>	rem Extracts text from glade and creates files for translation<br>	set locdir=po<br><br>	mkdir %locdir%<br>	set xgettext="C:\Program Files\GnuWin32\bin\xgettext" --sort-output --keyword=translatable<br>	%xgettext% -o %locdir%/Layout.pot data\Layout.glade<br>	%xgettext% -k_ -o %locdir%/Module1StringCodes.pot Module1StringCodes.cpp<br>	%xgettext% -k_ -o %locdir%/Module2StringCodes.pot Module2StringCodes.cpp<br><br>	rem copy file and replace "charset=CHARSET" with "charset=UTF-8" or "charset=ISO-8859-1"<br><br>	rem spanish<br>	copy %locdir%\Layout.pot %locdir%\esLayout.po<br>	copy %locdir%\Module1StringCodes.pot %locdir%\esModule1StringCodes.po<br>	copy %locdir%\Module2StringCodes.pot %locdir%\esModule2StringCodes.po<br>	<br>	rem french<br>	copy %locdir%\Layout.pot %locdir%\frLayout.po<br>	copy %locdir%\Module1StringCodes.pot %locdir%\frModule1StringCodes.po<br>	copy %locdir%\Module2StringCodes.pot %locdir%\frModule2StringCodes.po<br>	<br>	del header.txt<br>	pause<br>	</pre>
+
+    <h4><a class="mozTocH4" name="mozTocId731777"></a>Create the .mo files</h4>
+	This concatenates multiple po files into a single po file.  Then it converts the po file
+	into a binary mo file.
+	<pre>	rem Takes translated files and converts to binary<br>	set srcdir=po<br>	set dstlocdir=locale\<br><br>	rem spanish<br>	set dstdir=%dstlocdir%\es_ES\LC_MESSAGES<br>	mkdir %dstdir%<br>	"C:\Program Files\GnuWin32\bin\msgcat" %srcdir%\esLayout.po %srcdir%\esModule1StringCodes.po<br>		%srcdir% \esModule2StringCodes.po -o %srcdir%\esProg.po<br>	"C:\Program Files\GnuWin32\bin\msgfmt" %srcdir%\esProg.po -o %dstdir%\Prog.mo<br>	rem french<br>	set dstdir=%dstlocdir%\fr_FR\LC_MESSAGES<br>	mkdir %dstdir%<br>	"C:\Program Files\GnuWin32\bin\msgcat" %srcdir%\frLayout.po %srcdir%\frProgStringCodes.po<br>		%srcdir% \frParamStringCodes.po -o %srcdir%\frProg.po<br>	"C:\Program Files\GnuWin32\bin\msgfmt" %srcdir%\frProg.po -o %dstdir%\Prog.mo<br>	pause<br>	</pre>
+
+  <h3><a class="mozTocH3" name="mozTocId710325"></a>On&#8722;Screen/Virtual Keyboards</h3>
+	According to http://www.linuxtogo.org/gowiki/AngstromManual, x11&#8722;based images come with
+	two virtual keyboards, but they are wrong. Documentation I have read says that the ability to enter
+	asian input on some of the keyboards is done poorly.
+	<table border="1">
+	<tbody><tr><th>Keyboard Name</th><th>Description</th></tr>
+	<tr><td>matchbox&#8722;keyboard</td><td>Install packages matchbox-keyboard and
+	matchbox-keyboard-im to allow auto display, and matchbox-keyboard-applet
+	</td></tr>
+	<tr><td>xkbd</td><td>Same person wrote matchbox-keyboard later.</td></tr>
+	</tbody></table>
+	There may be others such as Florence, illume, etc.
+
+   <h4><a class="mozTocH4" name="mozTocId327924"></a>Matchbox Keyboard</h4>
+	There is an example file named matchbox-keyboard-gtk-embed.c.
+	The only documentation I could find is the readme.
+		<a href="http://git.yoctoproject.org/cgit/cgit.cgi/matchbox-keyboard/tree/README">
+		readme</a>
+	The keyboard uses the XEmbed protocol, which allows embedding the keyboard into an
+		application, but the example readme file shows a simple use case.
+		<a href="http://en.wikipedia.org/wiki/XEmbed">XEmbed</a>
+	<p>
+	The simplest solution I found is to catch the "enter-notify-event" of the GtkWidget on
+	an entry or GtkTextView, and popup a dialog that contains a vbox that contains the keyboard
+	window along with a text edit window. When the dialog is opened, the text is copied from the
+	original text window to the keyboard dialog text entry, then the keyboard will modify
+	text in the dialog's text entry, then when the dialog is closed, the text is copied from
+	the dialog text entry back to the original text window.
+	<br>
+	There is a race condition when the dialog pops up, so I used g_idle_add to delay the dialog
+	from popping up until the enter-notify-event has completed.
+	</p><p>
+	In the Angstrom OS, the default keyboard definition is in /usr/share/matchbox-keyboard/keyboard.xml
+	and appears to be a British keyboard.  This keyboard can be easily modified to fit in a
+	portrait view 320x200 LCD screen by reducing the amount of space for the space bar, and
+	removing the home and end buttons. Another option could be to replace the Ctrl and Alt
+	keys with a home and end. A few other keyboards are distributed, but there are no asian languages.
+
+</p><h1><a class="mozTocH1" name="mozTocId329320"></a>Other</h1>
+	<h2><a class="mozTocH2" name="mozTocId986480"></a>Remove DOS line endings</h2>
+	"sed &#8722;i &#8217;s/\r//&#8217; filename"
+	<h2><a class="mozTocH2" name="mozTocId49326"></a>Git</h2>
+	I found using git for a local repository was very easy. The git for windows
+	is here <a href="http://git-scm.com/download/win">git download</a>. It provides
+	a graphical interface that shows file modifications, and can be used to browse
+	commit history. There is a guide here
+	<a href="http://nathanj.github.io/gitguide/tour.html">Git Guide</a>.
+</body></html>
